@@ -7,11 +7,11 @@
 
 <script>
   import sourceData from '@/data'
-  import ThreadList from './ThreadList'
+  import ThreadList from '@/components/ThreadList'
+  // @ refers to src directory. The symbol has defined in webpack
   console.log(sourceData)
 
   export default {
-    name: 'HelloWorld',
     components: {
       ThreadList
     },
