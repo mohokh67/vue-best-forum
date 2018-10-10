@@ -3,7 +3,7 @@
 
     <div>
       <p>
-        <router-link :to="`/thread/${thread['.key']}`">
+        <router-link :to="{name: 'ThreadShow', params: {id: thread['.key']}}">
           {{ thread.title }}
         </router-link>
       </p>
