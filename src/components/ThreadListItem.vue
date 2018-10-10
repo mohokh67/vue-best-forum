@@ -3,7 +3,6 @@
 
     <div>
       <p>
-        <!--<a :href="`/thread/${thread['.key']}`">{{ thread.title }}</a>-->
         <router-link :to="`/thread/${thread['.key']}`">
           {{ thread.title }}
         </router-link>
