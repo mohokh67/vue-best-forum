@@ -16,8 +16,8 @@ export default new Router({
       path: '/thread/:id',
       name: 'ThreadShow',
       component: ThreadSHow,
-      props: true
+      props: true // accept props from route
     }
   ],
-  mode: 'history'
+  mode: 'history' // https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
 })
