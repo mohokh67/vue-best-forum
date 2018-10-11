@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/PageHome'
 import ThreadSHow from '@/pages/PageThreadShow'
+import NotFound from '@/pages/PageNotFound'
 
 Vue.use(Router)
 
@@ -21,7 +22,7 @@ export default new Router({
     {
       path: '*',
       name: 'NotFound',
-      redirect: {name: 'Home'}
+      component: NotFound
     }
   ],
   mode: 'history' // https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
