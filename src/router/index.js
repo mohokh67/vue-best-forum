@@ -17,6 +17,11 @@ export default new Router({
       name: 'ThreadShow',
       component: ThreadSHow,
       props: true // accept props from route
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      redirect: '/'
     }
   ],
   mode: 'history' // https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
