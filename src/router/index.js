@@ -21,7 +21,7 @@ export default new Router({
     {
       path: '*',
       name: 'NotFound',
-      redirect: '/'
+      redirect: {name: 'Home'}
     }
   ],
   mode: 'history' // https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
