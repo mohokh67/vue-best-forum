@@ -43,9 +43,8 @@
       }
     },
     methods: {
-      addPost (eventData) {
-        const post = eventData.post
-        const postId = eventData.post['.key']
+      addPost ({post}) {
+        const postId = post['.key']
         this.$set(sourceData.posts, postId, post) // add post to posts
         this.$set(this.thread.posts, postId, postId) // add post to this thread threads post
         this.$set(sourceData.users[post.userId].posts, postId, postId) // add postId to this user
