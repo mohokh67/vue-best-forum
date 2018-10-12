@@ -12,8 +12,11 @@
         {{post.text}}
       </div>
     </div>
-    <div class="post-date text-faded">
-      {{post.publishedAt | humanFriendlyDate}}
+    <div
+      class="post-date text-faded"
+      :title="post.publishedAt | humanFriendlyDate"
+    >
+      {{post.publishedAt | diffForHuman}}
     </div>
   </div>
 </template>
@@ -40,6 +43,9 @@
     filters: {
       humanFriendlyDate (date) {
         return moment.unix(date).format('MMMM Do YYYY, h:mm:ss a')
+      },
+      diffForHuman (date) {
+        return moment.unix(date).fromNow()
       }
     }
 

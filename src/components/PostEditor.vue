@@ -32,7 +32,7 @@
       save () {
         const postId = 'greatPost.' + Math.random()
         const post = {
-          publishedAt: Math.floor(Date.now()),
+          publishedAt: Math.floor(Date.now() / 1000),
           threadId: this.threadId,
           userId: 'jUjmgCurRRdzayqbRMO7aTG9X1G2',
           text: this.postText,
