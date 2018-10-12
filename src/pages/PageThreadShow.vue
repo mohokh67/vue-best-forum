@@ -7,7 +7,7 @@
     @save="addPost"
     :threadId="id"
     />
-
+    <!-- On the save event (custom event on PostEditor component) run addPost() -->
 
   </div>
 
@@ -44,7 +44,6 @@
     },
     methods: {
       addPost (eventData) {
-        console.log(eventData)
         const post = eventData.post
         const postId = eventData.post['.key']
         this.$set(sourceData.posts, postId, post) // add post to posts
