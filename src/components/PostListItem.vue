@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="post-date text-faded">
-      {{humanFriendlyDate}}
+      {{post.publishedAt | humanFriendlyDate}}
     </div>
   </div>
 </template>
@@ -35,9 +35,11 @@
       },
       userPostsCount () {
         return Object.keys(this.user.posts).length
-      },
-      humanFriendlyDate () {
-        return moment.unix(this.post.publishedAt).format('MMMM Do YYYY, h:mm:ss a')
+      }
+    },
+    filters: {
+      humanFriendlyDate (date) {
+        return moment.unix(date).format('MMMM Do YYYY, h:mm:ss a')
       }
     }
 
