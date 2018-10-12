@@ -10,7 +10,7 @@
           v-model="postText"
         ></textarea>
     </div>
-    <div class="form-action">
+    <div class="form-action btn-group">
       <button class="btn-blue">Submit</button>
     </div>
   </form>
