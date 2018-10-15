@@ -1,26 +1,24 @@
 <template>
   <div class="col-full">
     <h1>Welcome to the Forum</h1>
-    <ForumList :forums="forums"/>
+    <CategoryList :categories="categories"/>
   </div>
 </template>
 
 <script>
   import sourceData from '@/data'
-  import ForumList from '@/components/ForumList'
+  import CategoryList from '@/components/CategoryList'
   // @ refers to src directory. The symbol has defined in webpack
   console.log(sourceData)
 
   export default {
     components: {
-      ForumList
+      CategoryList
     },
 
     data () {
       return {
-        forums: Object.values(sourceData.forums),
-        users: sourceData.users,
-        posts: sourceData.posts
+        categories: Object.values(sourceData.categories)
       }
     }
   }
