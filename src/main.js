@@ -8,6 +8,7 @@ import AppDate from '@/components/AppDate'
 
 Vue.component('AppDate', AppDate)
 Vue.config.productionTip = false
+// Vue.config.silent = true
 
 /* eslint-disable no-new */
 new Vue({
