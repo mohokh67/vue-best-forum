@@ -14,11 +14,47 @@
       <div class="middle bar"></div>
       <div class="bottom bar"></div>
     </div>
+
+    <!-- use .navbar-open to open nav -->
+    <nav class="navbar">
+      <ul>
+        <li class="navbar-user">
+          <router-link :to="{name: 'Profile'}">
+            <img class="avatar-small" :src="user.avatar" alt="">
+            <span>
+                {{user.name}}
+                <img class="icon-profile" src="../assets/img/arrow-profile.svg" alt="">
+            </span>
+          </router-link>
+
+          <!-- dropdown menu -->
+          <!-- add class "active-drop" to show the dropdown -->
+          <div id="user-dropdown">
+            <div class="triangle-drop"></div>
+            <ul class="dropdown-menu">
+              <li class="dropdown-menu-item">
+                <a>View Profile</a>
+              </li>
+              <li class="dropdown-menu-item">
+                <a>Sign Out</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+       </ul>
+    </nav>
   </header>
 </template>
 
 <script>
-  export default {}
+  import {mapGetters} from 'vuex'
+  export default {
+    computed: {
+      ...mapGetters({
+        'user': 'authUser'
+      })
+    }
+  }
 </script>
 
 <style scoped>
