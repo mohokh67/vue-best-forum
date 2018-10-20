@@ -22,7 +22,7 @@
       <hr>
 
       <p v-if="user.website" class="text-large text-center">
-        <i class="fa fa-globe">
+        <i class="fas fa-globe">
           <a :href="user.website">{{user.website}}</a>
         </i>
       </p>
