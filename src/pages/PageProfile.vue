@@ -1,11 +1,13 @@
 <template>
   <div class="flex-grid">
-    <!-- <UserProfileCard
+    <UserProfileCard
+      v-if="!edit"
       :user="user"
       :userPostsCount="userPostsCount"
       :userThreadsCount="userThreadsCount"
-    /> -->
+    />
     <UserProfileCardEdit
+      v-else
       :user="user"
       :userPostsCount="userPostsCount"
       :userThreadsCount="userThreadsCount"
@@ -35,6 +37,13 @@
       PostList,
       UserProfileCard,
       UserProfileCardEdit
+    },
+
+    props: {
+      edit: {
+        type: Boolean,
+        default: false
+      }
     },
 
     computed: {
