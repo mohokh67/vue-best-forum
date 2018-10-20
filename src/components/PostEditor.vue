@@ -18,7 +18,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
   export default {
     props: {
       threadId: {
@@ -45,14 +44,14 @@
           threadId: this.threadId,
           text: this.postText
         }
-        
+
         this.postText = ''
 
         this.hasError = false
         // this.$emit('save', {post}) // custom event - broadcast event to any one who is listening
         this.$store.dispatch('createPost', post)
-
       }
+
     }
   }
 </script>
