@@ -14,7 +14,7 @@
         </p>
 
         <span class="online">{{user.username}} is online</span>
-        
+
         <div class="stats">
           <span>{{userPostsCount}} posts</span>
           <span>{{userThreadsCount}} threads</span>
@@ -22,7 +22,11 @@
 
         <hr>
 
-        <p v-if="user.website" class="text-large text-center"><i class="fa fa-globe"><a :href="user.website">{{user.website}}</a></i></p>
+        <p v-if="user.website" class="text-large text-center">
+          <i class="fa fa-globe">
+            <a :href="user.website">{{user.website}}</a>
+          </i>
+        </p>
       </div>
 
         <p class="text-xsmall text-faded text-center">sssss</p>
@@ -41,15 +45,16 @@
         <hr>
 
       <PostList :posts="userPosts" />
-        
+
     </div>
   </div>
 </template>
 <script>
   import PostList from '@/components/PostList'
   import { mapGetters } from 'vuex'
-  export default {
+  import { countObjectProperties } from '@/helpers'
 
+  export default {
     components: {
       PostList
     },
@@ -60,11 +65,11 @@
       }),
 
       userPostsCount () {
-        return this.user.posts ? Object.keys(this.user.posts).length : 0
+        return countObjectProperties(this.user.posts)
       },
 
       userThreadsCount () {
-        return this.user.threads ? Object.keys(this.user.threads).length : 0
+        return countObjectProperties(this.user.threads)
       },
 
       userPosts () {
