@@ -31,18 +31,10 @@
       }
     },
 
-    computed: {
-      ...mapGetters({
-        currentUser: 'authUser'
-      })
-    },
-
     methods: {
       save () {
         const post = {
-          publishedAt: Math.floor(Date.now() / 1000),
           threadId: this.threadId,
-          userId: this.currentUser['.key'],
           text: this.postText
         }
         this.postText = ''

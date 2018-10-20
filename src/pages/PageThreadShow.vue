@@ -10,10 +10,8 @@
     <PostEditor
     :threadId="id"
     />
-    <!-- On the save event (custom event on PostEditor component) run addPost() -->
 
   </div>
-
 </template>
 
 
@@ -32,12 +30,11 @@
       }
     },
 
-    data () {
-      return {
-        thread: this.$store.state.threads[this.id]
-      }
-    },
     computed: {
+      thread () {
+        return this.$store.state.threads[this.id]
+      },
+
       posts () {
         const postIds = Object.values(this.thread.posts)
         return Object.values(this.$store.state.posts)
