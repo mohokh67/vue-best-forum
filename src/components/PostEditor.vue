@@ -17,23 +17,32 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   export default {
     props: {
       threadId: {
         required: true
       }
     },
+
     data () {
       return {
         postText: ''
       }
     },
+
+    computed: {
+      ...mapGetters({
+        currentUser: 'authUser'
+      })
+    },
+
     methods: {
       save () {
         const post = {
           publishedAt: Math.floor(Date.now() / 1000),
           threadId: this.threadId,
-          userId: 'jUjmgCurRRdzayqbRMO7aTG9X1G2',
+          userId: this.currentUser['.key'],
           text: this.postText
         }
         this.postText = ''
