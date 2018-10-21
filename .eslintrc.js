@@ -20,7 +20,7 @@ module.exports = {
     'no-unused-vars': 1,
 
     // allow paren-less arrow functions
-    'arrow-parens': process.env.NODE_ENV === 'production' ? 2 : 1,
+    'arrow-parens': process.env.NODE_ENV === 'production' ? 2 : 0,
     // allow async-await
     'generator-star-spacing': 0,
     // allow debugger during development
