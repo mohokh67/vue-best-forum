@@ -26,10 +26,11 @@ export default new Vuex.Store({
       commit('addPost', {post, postId})
       commit('addPostToThread', {postId, threadId: post.threadId})
       commit('addPostToUser', {userId: post.userId, postId})
+      return Promise.resolve(state.posts[postId])
     },
 
     // threads
-    createThread ({state, commit, dispatch}, {content, title, forumId}) {
+    createThread ({state, commit, dispatch}, {text, title, forumId}) {
       return new Promise((resolve, reject) => {
         const publishedAt = Math.floor(Date.now() / 1000)
         const userId = this.state.authId
@@ -39,17 +40,20 @@ export default new Vuex.Store({
         commit('addThreadToUser', {userId, threadId})
         commit('addThreadToForum', {forumId, threadId})
 
-        dispatch('createPost', {content, threadId})
+        dispatch('createPost', {text, threadId})
+          .then(post => {
+            commit('addThread', {threadId, thread: {...thread, firstPostId: post['.key']}})
+          })
         resolve(state.threads[threadId])
       })
     },
 
-    updateThread ({state, commit}, {id, content, title}) {
+    updateThread ({state, commit}, {id, text, title}) {
       return new Promise((resolve, reject) => {
         const thread = state.threads[id]
         const post = state.posts[thread.firstPostId]
         const newThread = {...thread, title}
-        const newPost = {...post, content}
+        const newPost = {...post, text}
 
         commit('addThread', {thread: newThread, threadId: id})
         commit('addPost', {post: newPost, postId: thread.firstPostId})

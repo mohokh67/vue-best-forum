@@ -3,7 +3,7 @@
     <h1>Editing <em>{{thread.title}}</em></h1>
     <ThreadEditor
       :title="thread.title"
-      :content="content"
+      :text="text"
       @save="save"
       @cancel="cancel"
     />
@@ -29,24 +29,24 @@
         return this.$store.state.threads[this.id]
       },
 
-      content () {
+      text () {
         return this.$store.state.posts[this.thread.firstPostId].text
       }
     },
 
     methods: {
-      save ({title, content}) {
+      save ({title, text}) {
         this.$store.dispatch('updateThread', {
           id: this.id,
-          content,
+          text,
           title
         }).then(thread => {
-          this.$router.push({name: 'ThreadShow', params: {id: thread['.key']}})
+          this.$router.push({name: 'ThreadShow', params: {id: this.id}})
         })
       },
 
       cancel () {
-        this.$router.push({name: 'Forum', params: {id: this.forum['.key']}})
+        this.$router.push({name: 'ThreadShow', params: {id: this.id}})
       }
     }
   }

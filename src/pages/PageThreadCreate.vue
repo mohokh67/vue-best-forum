@@ -29,10 +29,10 @@
     },
 
     methods: {
-      save ({title, content}) {
+      save ({title, text}) {
         this.$store.dispatch('createThread', {
           forumId: this.forum['.key'],
-          content,
+          text,
           title
         }).then(thread => {
           this.$router.push({name: 'ThreadShow', params: {id: thread['.key']}})

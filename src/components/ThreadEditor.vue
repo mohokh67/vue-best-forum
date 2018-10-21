@@ -13,7 +13,7 @@
       <div class="form-group">
         <label for="threadContent">Content:</label>
         <textarea
-          v-model="form.content"
+          v-model="form.text"
           name="content"
           id="threadContent"
           cols="140"
@@ -24,7 +24,7 @@
 
       <div class="btn-group">
         <button @click.prevent="cancel" class="btn btn-ghost">Cancel</button>
-        <button class="btn btn-blue" type="submit">Publish</button>
+        <button class="btn btn-blue" type="submit">{{isUpdating ? 'Update' : 'Publish'}}</button>
       </div>
     </form>
 </template>
@@ -35,7 +35,7 @@
         type: String,
         default: ''
       },
-      content: {
+      text: {
         type: String,
         default: ''
       }
@@ -45,14 +45,20 @@
       return {
         form: {
           title: this.title,
-          content: this.content
+          text: this.text
         }
+      }
+    },
+
+    computed: {
+      isUpdating () {
+        return !!this.title
       }
     },
 
     methods: {
       save () {
-        this.$emit('save', {title: this.form.title, content: this.form.content})
+        this.$emit('save', {title: this.form.title, text: this.form.text})
       },
 
       cancel () {
