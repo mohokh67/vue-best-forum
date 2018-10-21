@@ -44,6 +44,20 @@ export default new Vuex.Store({
       })
     },
 
+    updateThread ({state, commit}, {id, content, title}) {
+      return new Promise((resolve, reject) => {
+        const thread = state.threads[id]
+        const post = state.posts[thread.firstPostId]
+        const newThread = {...thread, title}
+        const newPost = {...post, content}
+
+        commit('addThread', {thread: newThread, threadId: id})
+        commit('addPost', {post: newPost, postId: thread.firstPostId})
+
+        resolve(newThread)
+      })
+    },
+
     // user
     updateUser (context, user) {
       context.commit('updateUser', {user, userId: user['.key']})
