@@ -1,51 +1,24 @@
 <template>
   <div class="col-full push-top">
     <h1>Create new thread in <em>{{forum.name}}</em></h1>
-    <form @submit.prevent="save">
-
-      <div class="form-group">
-        <label for="threadTitle">Title:</label>
-        <input
-          v-model="title"
-          type="text"
-          class="form-input"
-          id="threadTitle"
-          name="title">
-      </div>
-
-      <div class="form-group">
-        <label for="threadContent">ontent:</label>
-        <textarea
-          v-model="content"
-          name="content"
-          id="threadContent"
-          cols="140"
-          rows="8"
-          class="form-input">
-        </textarea>
-      </div>
-
-      <div class="btn-group">
-        <button @click.prevent="cancel" class="btn btn-ghost">Cancel</button>
-        <button class="btn btn-blue" type="submit">Publish</button>
-      </div>
-    </form>
+    <ThreadEditor
+      @save="save"
+      @cancel="cancel"
+    />
   </div>
 </template>
 
 <script>
+  import ThreadEditor from '@/components/ThreadEditor'
   export default {
+    components: {
+      ThreadEditor
+    },
+
     props: {
       forumId: {
         required: true,
         type: String
-      }
-    },
-
-    data () {
-      return {
-        title: '',
-        content: ''
       }
     },
 
@@ -56,11 +29,11 @@
     },
 
     methods: {
-      save () {
+      save ({title, content}) {
         this.$store.dispatch('createThread', {
           forumId: this.forum['.key'],
-          content: this.content,
-          title: this.title
+          content,
+          title
         }).then(thread => {
           this.$router.push({name: 'ThreadShow', params: {id: thread['.key']}})
         })
