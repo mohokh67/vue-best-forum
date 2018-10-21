@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/PageHome'
-import ThreadSHow from '@/pages/PageThreadShow'
+import ThreadShow from '@/pages/PageThreadShow'
+import ThreadCreate from '@/pages/PageThreadCreate'
 import NotFound from '@/pages/PageNotFound'
 import Forum from '@/pages/PageForum'
 import Profile from '@/pages/PageProfile'
@@ -31,9 +32,15 @@ export default new Router({
 
     },
     {
+      path: '/thread/create/:forumId',
+      name: 'ThreadCreate',
+      component: ThreadCreate,
+      props: true // accept props from route
+    },
+    {
       path: '/thread/:id',
       name: 'ThreadShow',
-      component: ThreadSHow,
+      component: ThreadShow,
       props: true // accept props from route
     },
     {
