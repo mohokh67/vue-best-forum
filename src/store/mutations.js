@@ -10,25 +10,12 @@ export default {
     Vue.set(state.posts, postId, post)
   },
 
-  addPostToThread (state, {postId, threadId}) {
-    const thread = state.threads[threadId]
-    if (!thread.posts) {
-      Vue.set(thread, 'posts', {})
-    }
-    Vue.set(thread.posts, postId, postId)
-  },
-
   addPostToUser (state, {userId, postId}) {
     const user = state.users[userId]
     if (!user.posts) {
       Vue.set(user, 'posts', {})
     }
     Vue.set(user.posts, postId, postId)
-  },
-
-  // threads
-  addThread (state, {threadId, thread}) {
-    Vue.set(state.threads, threadId, thread)
   },
 
   addThreadToForum (state, {forumId, threadId}) {
@@ -46,4 +33,5 @@ export default {
     }
     Vue.set(user.threads, threadId, threadId)
   }
+
 }

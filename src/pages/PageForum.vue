@@ -23,7 +23,7 @@
 
 <script>
   import ThreadList from '@/components/ThreadList'
-
+  import {mapGetters} from 'vuex'
   export default {
     components: {
       ThreadList
@@ -39,7 +39,7 @@
         return this.$store.state.forums[this.id]
       },
       threads () {
-        return Object.values(this.$store.state.threads)
+        return Object.values(this.$store.state.threads.items)
           .filter(thread => thread.forumId === this.id)
       }
     }

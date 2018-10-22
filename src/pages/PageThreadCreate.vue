@@ -30,7 +30,7 @@
 
     methods: {
       save ({title, text}) {
-        this.$store.dispatch('createThread', {
+        this.$store.dispatch('threads/createThread', {
           forumId: this.forum['.key'],
           text,
           title

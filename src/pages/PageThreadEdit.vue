@@ -26,7 +26,7 @@
 
     computed: {
       thread () {
-        return this.$store.state.threads[this.id]
+        return this.$store.state.threads.items[this.id]
       },
 
       text () {
@@ -36,7 +36,7 @@
 
     methods: {
       save ({title, text}) {
-        this.$store.dispatch('updateThread', {
+        this.$store.dispatch('threads/updateThread', {
           id: this.id,
           text,
           title

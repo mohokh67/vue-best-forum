@@ -41,7 +41,7 @@
 
     computed: {
       thread () {
-        return this.$store.state.threads[this.id]
+        return this.$store.state.threads.items[this.id]
       },
 
       posts () {
