@@ -5,11 +5,6 @@ export default {
     Vue.set(state.users, userId, user)
   },
 
-  // posts
-  addPost (state, {post, postId}) {
-    Vue.set(state.posts, postId, post)
-  },
-
   addPostToUser (state, {userId, postId}) {
     const user = state.users[userId]
     if (!user.posts) {

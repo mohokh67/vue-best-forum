@@ -11,7 +11,6 @@ export default {
   getters: { },
 
   actions: {
-    // threads
     createThread ({state, commit, dispatch, rootState}, {text, title, forumId}) {
       return new Promise((resolve, reject) => {
         const publishedAt = Math.floor(Date.now() / 1000)
@@ -22,7 +21,7 @@ export default {
         commit('addThreadToUser', {userId, threadId}, {root: true})
         commit('forums/addThreadToForum', {forumId, threadId}, {root: true})
 
-        dispatch('createPost', {text, threadId}, {root: true})
+        dispatch('posts/createPost', {text, threadId}, {root: true})
           .then(post => {
             commit('addThread', {threadId, thread: {...thread, firstPostId: post['.key']}})
           })
@@ -38,7 +37,7 @@ export default {
         const newPost = {...post, text}
 
         commit('addThread', {thread: newThread, threadId: id})
-        commit('addPost', {post: newPost, postId: thread.firstPostId}, {root: true})
+        commit('posts/addPost', {post: newPost, postId: thread.firstPostId}, {root: true})
 
         resolve(newThread)
       })
@@ -46,7 +45,6 @@ export default {
   },
 
   mutations: {
-    // threads
     addThread (state, {threadId, thread}) {
       Vue.set(state.items, threadId, thread)
     },

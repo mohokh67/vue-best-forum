@@ -30,7 +30,7 @@
       },
 
       text () {
-        return this.$store.state.posts[this.thread.firstPostId].text
+        return this.$store.state.posts.items[this.thread.firstPostId].text
       }
     },
 

@@ -6,15 +6,17 @@ import getters from './getters'
 import actions from './actions'
 import mutations from './mutations'
 
-import threads from './modules/threads'
 import forums from './modules/forums'
+import threads from './modules/threads'
+import posts from './modules/posts'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     threads,
-    forums
+    forums,
+    posts
   },
 
   state: {

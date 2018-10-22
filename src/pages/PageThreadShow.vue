@@ -46,7 +46,7 @@
 
       posts () {
         const postIds = Object.values(this.thread.posts)
-        return Object.values(this.$store.state.posts)
+        return Object.values(this.$store.state.posts.items)
           .filter(post => postIds.includes(post['.key']))
       }
     }
