@@ -20,7 +20,7 @@ export default {
         const thread = {'.key': threadId, title, forumId, publishedAt, userId}
         commit('addThread', {thread, threadId})
         commit('addThreadToUser', {userId, threadId}, {root: true})
-        commit('addThreadToForum', {forumId, threadId}, {root: true})
+        commit('forums/addThreadToForum', {forumId, threadId}, {root: true})
 
         dispatch('createPost', {text, threadId}, {root: true})
           .then(post => {

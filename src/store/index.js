@@ -7,12 +7,14 @@ import actions from './actions'
 import mutations from './mutations'
 
 import threads from './modules/threads'
+import forums from './modules/forums'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    threads
+    threads,
+    forums
   },
 
   state: {

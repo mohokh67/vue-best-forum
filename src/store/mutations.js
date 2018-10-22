@@ -18,14 +18,6 @@ export default {
     Vue.set(user.posts, postId, postId)
   },
 
-  addThreadToForum (state, {forumId, threadId}) {
-    const forum = state.forums[forumId]
-    if (!forum.threads) {
-      Vue.set(forum, 'threads', {})
-    }
-    Vue.set(forum.threads, threadId, threadId)
-  },
-
   addThreadToUser (state, {userId, threadId}) {
     const user = state.users[userId]
     if (!user.threads) {
