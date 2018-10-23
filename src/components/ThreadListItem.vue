@@ -41,7 +41,7 @@
         return countObjectProperties(this.thread.posts) - 1
       },
       user () {
-        return this.$store.state.users[this.thread.userId]
+        return this.$store.state.users.items[this.thread.userId]
       }
     }
   }

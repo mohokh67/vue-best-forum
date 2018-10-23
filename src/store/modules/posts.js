@@ -19,7 +19,7 @@ export default {
 
       commit('addPost', {post, postId})
       commit('threads/addPostToThread', {postId, threadId: post.threadId}, {root: true})
-      commit('addPostToUser', {userId: post.userId, postId}, {root: true})
+      commit('users/addPostToUser', {userId: post.userId, postId}, {root: true})
       return Promise.resolve(state.items[postId])
     }
   },

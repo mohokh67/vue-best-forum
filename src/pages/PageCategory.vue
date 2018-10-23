@@ -19,7 +19,7 @@
     },
     computed: {
       category () {
-        return this.$store.state.categories[this.id]
+        return this.$store.state.categories.items[this.id]
       }
     }
   }

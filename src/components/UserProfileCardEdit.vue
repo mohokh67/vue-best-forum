@@ -77,7 +77,7 @@
 
     methods: {
       save () {
-        this.$store.dispatch('updateUser', {...this.currentUser})
+        this.$store.dispatch('users/updateUser', {...this.currentUser})
         this.$router.push({name: 'Profile'})
       },
 
