@@ -15,7 +15,7 @@ export default {
       const postId = 'greatPost' + Math.random()
       post['.key'] = postId
       post.publishedAt = Math.floor(Date.now() / 1000)
-      post.userId = rootState.authId
+      post.userId = rootState.users.authId
 
       commit('addPost', {post, postId})
       commit('threads/addPostToThread', {postId, threadId: post.threadId}, {root: true})

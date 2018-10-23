@@ -29,7 +29,6 @@ export default {
 
     addPostToUser (state, {userId, postId}) {
       const user = state.items[userId]
-      console.log(userId)
       if (!user.posts) {
         Vue.set(user, 'posts', {})
       }
