@@ -21,7 +21,7 @@ export default {
         commit('users/addThreadToUser', {userId, threadId}, {root: true})
         commit('forums/addThreadToForum', {forumId, threadId}, {root: true})
 
-        dispatch('posts/createPost', {text, threadId}, {root: true})
+        dispatch('posts/create', {text, threadId}, {root: true})
           .then(post => {
             commit('addThread', {threadId, thread: {...thread, firstPostId: post['.key']}})
           })

@@ -4,7 +4,7 @@
         <textarea
           name=""
           id=""
-          cols="30"
+          cols="300"
           rows="3"
           class="form-input"
           v-model="postText"
@@ -21,19 +21,40 @@
   export default {
     props: {
       threadId: {
-        required: true
+        required: false,
+        type: String
+      },
+      post: {
+        type: Object
       }
     },
 
     data () {
       return {
-        postText: '',
+        postText: this.post ? this.post.text : '',
         hasError: false
+      }
+    },
+
+    computed: {
+      isUpdate () {
+        return !!this.post
       }
     },
 
     methods: {
       save () {
+        (this.presist())
+          .then(post => {
+            this.$emit('save', {post})
+          })
+      },
+
+      presist () {
+        return this.isUpdate ? this.update() : this.create()
+      },
+
+      create () {
         this.hasError = false
         if (this.postText === '') {
           this.hasError = true
@@ -47,8 +68,18 @@
 
         this.postText = ''
         this.hasError = false
-        // this.$emit('save', {post}) // custom event - broadcast event to any one who is listening
-        this.$store.dispatch('posts/createPost', post)
+        return this.$store.dispatch('posts/create', post)
+      },
+
+      update () {
+        const payload = {
+          id: this.post['.key'],
+          text: this.postText
+        }
+
+        this.postText = ''
+        this.hasError = false
+        return this.$store.dispatch('posts/update', payload)
       }
 
     }

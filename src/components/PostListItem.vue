@@ -8,9 +8,18 @@
       <p class="destop-only text-small">{{userPostsCount}} posts</p>
     </div>
     <div class="post-content">
-      <div>
-        {{post.text}}
+      <div v-if="editing">
+        <PostEditor
+          :post="post"
+          @save="editing = false"
+        />
       </div>
+      <template v-else>
+        <div>
+          {{post.text}}
+        </div>
+        <a @click.prevent="editing = true" class="link-unstyled editPost" title="Make a chane"><i class="fa fa-pencil"></i></a>
+      </template>
     </div>
     <div class="post-date text-faded">
       <AppDate :timestamp="post.publishedAt" />
@@ -20,6 +29,7 @@
 
 <script>
   import { countObjectProperties } from '@/helpers'
+  import PostEditor from './PostEditor'
 
   export default {
     props: {
@@ -28,6 +38,17 @@
         type: Object
       }
     },
+
+    components: {
+      PostEditor
+    },
+
+    data () {
+      return {
+        editing: false
+      }
+    },
+
     computed: {
       user () {
         return this.$store.state.users.items[this.post.userId]
@@ -39,3 +60,9 @@
 
   }
 </script>
+<style scoped>
+  .editPost{
+    margin-left: auto;
+  }
+</style>
+
