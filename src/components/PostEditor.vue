@@ -12,7 +12,8 @@
         <p v-if="hasError" class="text-error">The post can not be empty</p>
     </div>
     <div class="form-action btn-group">
-      <button class="btn-blue">Submit</button>
+      <button v-if="isUpdate" @click.prevent="cancel" class="btn btn-ghost">Cancel</button>
+      <button class="btn-blue">{{isUpdate ? 'Update' : 'Submit post'}}</button>
     </div>
   </form>
 </template>
@@ -80,6 +81,10 @@
         this.postText = ''
         this.hasError = false
         return this.$store.dispatch('posts/update', payload)
+      },
+
+      cancel () {
+        this.$emit('cancel')
       }
 
     }
