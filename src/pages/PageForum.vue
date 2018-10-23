@@ -23,7 +23,6 @@
 
 <script>
   import ThreadList from '@/components/ThreadList'
-  import {mapGetters} from 'vuex'
   export default {
     components: {
       ThreadList
