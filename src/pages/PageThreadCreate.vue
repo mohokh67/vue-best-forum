@@ -24,13 +24,13 @@
 
     computed: {
       forum () {
-        return this.$store.state.forums[this.forumId]
+        return this.$store.state.forums.items[this.forumId]
       }
     },
 
     methods: {
       save ({title, text}) {
-        this.$store.dispatch('createThread', {
+        this.$store.dispatch('threads/createThread', {
           forumId: this.forum['.key'],
           text,
           title

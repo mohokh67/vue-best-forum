@@ -30,7 +30,7 @@
     },
     computed: {
       user () {
-        return this.$store.state.users[this.post.userId]
+        return this.$store.state.users.items[this.post.userId]
       },
       userPostsCount () {
         return countObjectProperties(this.user.posts)

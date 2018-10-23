@@ -15,10 +15,8 @@
 
     computed: {
       categories () {
-        return Object.values(this.$store.state.categories)
+        return Object.values(this.$store.state.categories.items)
       }
     }
   }
 </script>
-
-<style scoped></style>

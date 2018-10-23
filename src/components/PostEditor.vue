@@ -46,10 +46,9 @@
         }
 
         this.postText = ''
-
         this.hasError = false
         // this.$emit('save', {post}) // custom event - broadcast event to any one who is listening
-        this.$store.dispatch('createPost', post)
+        this.$store.dispatch('posts/createPost', post)
       }
 
     }

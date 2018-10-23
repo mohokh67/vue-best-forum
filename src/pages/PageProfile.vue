@@ -47,7 +47,7 @@
     },
 
     computed: {
-      ...mapGetters({
+      ...mapGetters('users', {
         'user': 'authUser'
       }),
 
@@ -61,7 +61,7 @@
 
       userPosts () {
         if (this.user.posts) {
-          return Object.values(this.$store.state.posts)
+          return Object.values(this.$store.state.posts.items)
             .filter(post => post.userId === this.user['.key'])
         }
 

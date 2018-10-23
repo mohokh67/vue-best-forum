@@ -26,17 +26,17 @@
 
     computed: {
       thread () {
-        return this.$store.state.threads[this.id]
+        return this.$store.state.threads.items[this.id]
       },
 
       text () {
-        return this.$store.state.posts[this.thread.firstPostId].text
+        return this.$store.state.posts.items[this.thread.firstPostId].text
       }
     },
 
     methods: {
       save ({title, text}) {
-        this.$store.dispatch('updateThread', {
+        this.$store.dispatch('threads/updateThread', {
           id: this.id,
           text,
           title

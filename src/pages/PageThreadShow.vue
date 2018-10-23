@@ -41,12 +41,12 @@
 
     computed: {
       thread () {
-        return this.$store.state.threads[this.id]
+        return this.$store.state.threads.items[this.id]
       },
 
       posts () {
         const postIds = Object.values(this.thread.posts)
-        return Object.values(this.$store.state.posts)
+        return Object.values(this.$store.state.posts.items)
           .filter(post => postIds.includes(post['.key']))
       }
     }
