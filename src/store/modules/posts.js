@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import sourceData from '@/data'
+import {currentTimestamp} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -14,7 +15,7 @@ export default {
     create ({commit, state, rootState}, post) {
       const postId = 'greatPost' + Math.random()
       post['.key'] = postId
-      post.publishedAt = Math.floor(Date.now() / 1000)
+      post.publishedAt = currentTimestamp()
       post.userId = rootState.users.authId
 
       commit('addPost', {post, postId})
@@ -26,7 +27,17 @@ export default {
     update ({commit, state, rootState}, {id, text}) {
       return new Promise((resolve, reject) => {
         const post = state.items[id]
-        commit('addPost', {postId: id, post: {...post, text}})
+        commit('addPost', {
+          postId: id,
+          post: {
+            ...post,
+            text,
+            edited: {
+              at: currentTimestamp(),
+              by: rootState.users.authId
+            }
+          }
+        })
         resolve(post)
       })
     }

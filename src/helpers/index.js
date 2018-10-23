@@ -5,6 +5,9 @@ const countObjectProperties = obj => {
   return 0
 }
 
+const currentTimestamp = () => Math.floor(Date.now() / 1000)
+
 export {
-  countObjectProperties
+  countObjectProperties,
+  currentTimestamp
 }
