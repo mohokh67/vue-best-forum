@@ -33,8 +33,8 @@
 </template>
 
 <script>
-  import { countObjectProperties } from '@/helpers'
   import PostEditor from './PostEditor'
+  import {mapGetters} from 'vuex'
 
   export default {
     props: {
@@ -55,11 +55,18 @@
     },
 
     computed: {
+
+      ...mapGetters('users', {
+        'userTotalPosts': 'userPostsCount',
+        'findUser': 'findUser'
+      }),
+
       user () {
-        return this.$store.state.users.items[this.post.userId]
+        return this.findUser(this.post.userId)
       },
+
       userPostsCount () {
-        return countObjectProperties(this.user.posts)
+        return this.userTotalPosts(this.post.userId)
       }
     }
 

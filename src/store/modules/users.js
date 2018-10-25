@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import sourceData from '@/data'
+import {countObjectProperties} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -12,7 +13,12 @@ export default {
   getters: {
     authUser (state) {
       return state.items[state.authId]
-    }
+    },
+
+    userPostsCount: (state) => (id) => countObjectProperties(state.items[id].posts),
+    userThreadsCount: (state) => (id) => countObjectProperties(state.items[id].threads),
+    findUser: (state) => (id) => state.items[id]
+
   },
 
   actions: {

@@ -52,21 +52,14 @@
   </div>
 </template>
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     props: {
       user: {
         required: true,
         type: Object
-      },
-      userPostsCount: {
-        required: true,
-        type: Number
-      },
-      userThreadsCount: {
-        required: true,
-        type: Number
       }
-
     },
 
     data () {
@@ -83,6 +76,21 @@
 
       cancel () {
         this.$router.push({name: 'Profile'})
+      }
+    },
+
+    computed: {
+      ...mapGetters('users', {
+        'userTotalPosts': 'userPostsCount',
+        'userTotalThreads': 'userThreadsCount'
+      }),
+
+      userPostsCount () {
+        return this.userTotalPosts(this.user['.key'])
+      },
+
+      userThreadsCount () {
+        return this.userTotalThreads(this.user['.key'])
       }
     }
 
