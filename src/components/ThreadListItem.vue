@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-  import { countObjectProperties } from '@/helpers'
+  import { mapGetters } from 'vuex'
 
   export default {
     props: {
@@ -37,11 +37,17 @@
     },
 
     computed: {
+      ...mapGetters({
+        'threadRepliesTotal': 'threads/threadRepliesCount',
+        'findUser': 'users/findUser'
+      }),
+
       repliedCount () {
-        return countObjectProperties(this.thread.posts) - 1
+        return this.threadRepliesTotal(this.thread['.key'])
       },
+
       user () {
-        return this.$store.state.users.items[this.thread.userId]
+        return this.findUser(this.thread.userId)
       }
     }
   }

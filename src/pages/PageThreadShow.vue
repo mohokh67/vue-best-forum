@@ -13,7 +13,7 @@
     </h1>
     <p>By
       <a href="#" class="link-unstyled">MoHo</a> <AppDate :timestamp="thread.publishedAt" />
-      <span class="hide-mobile text-faded text-small">3 replies by 3 contributers</span>
+      <span class="hide-mobile text-faded text-small">{{repliedCount}} replies by {{contributersCount}} contributers</span>
     </p>
     <PostList :posts="posts"/>
     <PostEditor
@@ -27,6 +27,8 @@
 <script>
   import PostList from '@/components/PostList'
   import PostEditor from '@/components/PostEditor'
+  import { mapGetters } from 'vuex'
+
   export default {
     components: {
       PostList,
@@ -40,8 +42,27 @@
     },
 
     computed: {
+      ...mapGetters('threads', {
+        'threadRepliesTotal': 'threadRepliesCount',
+        'findThread': 'findThread'
+      }),
+
+      repliedCount () {
+        return this.threadRepliesTotal(this.thread['.key'])
+      },
+
+      contributersCount () {
+        const replies = Object.keys(this.thread.posts)
+          .filter(postId => postId !== this.thread.firstPostId)
+          .map(postId => this.$store.state.posts.items[postId])
+
+        const userIds = replies.map(post => post.userId)
+
+        return userIds.filter((item, index) => index === userIds.indexOf(item)).length
+      },
+
       thread () {
-        return this.$store.state.threads.items[this.id]
+        return this.findThread(this.id)
       },
 
       posts () {

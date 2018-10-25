@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import sourceData from '@/data'
-import {appendChildToParentMutation} from '@/helpers'
+import {countObjectProperties, appendChildToParentMutation} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -9,7 +9,10 @@ export default {
     items: sourceData.threads
   },
 
-  getters: { },
+  getters: {
+    threadRepliesCount: (state) => (id) => countObjectProperties(state.items[id].posts) - 1,
+    findThread: (state) => (id) => state.items[id]
+  },
 
   actions: {
     createThread ({state, commit, dispatch, rootState}, {text, title, forumId}) {
