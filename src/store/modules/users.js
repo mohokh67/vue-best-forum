@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import sourceData from '@/data'
-import {countObjectProperties} from '@/helpers'
+import {countObjectProperties, appendChildToParentMutation} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -33,20 +33,7 @@ export default {
       Vue.set(state.items, userId, user)
     },
 
-    addPostToUser (state, {userId, postId}) {
-      const user = state.items[userId]
-      if (!user.posts) {
-        Vue.set(user, 'posts', {})
-      }
-      Vue.set(user.posts, postId, postId)
-    },
-
-    addThreadToUser (state, {userId, threadId}) {
-      const user = state.items[userId]
-      if (!user.threads) {
-        Vue.set(user, 'threads', {})
-      }
-      Vue.set(user.threads, threadId, threadId)
-    }
+    addPostToUser: appendChildToParentMutation({child: 'posts'}),
+    addThreadToUser: appendChildToParentMutation({child: 'threads'})
   }
 }

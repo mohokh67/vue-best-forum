@@ -19,8 +19,8 @@ export default {
       post.userId = rootState.users.authId
 
       commit('addPost', {post, postId})
-      commit('threads/addPostToThread', {postId, threadId: post.threadId}, {root: true})
-      commit('users/addPostToUser', {userId: post.userId, postId}, {root: true})
+      commit('threads/addPostToThread', {childId: postId, parentId: post.threadId}, {root: true})
+      commit('users/addPostToUser', {parentId: post.userId, childId: postId}, {root: true})
       return Promise.resolve(state.items[postId])
     },
 

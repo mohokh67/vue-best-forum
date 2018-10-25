@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import sourceData from '@/data'
+import {appendChildToParentMutation} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -13,12 +13,6 @@ export default {
   actions: { },
 
   mutations: {
-    addThreadToForum (state, {forumId, threadId}) {
-      const forum = state.items[forumId]
-      if (!forum.threads) {
-        Vue.set(forum, 'threads', {})
-      }
-      Vue.set(forum.threads, threadId, threadId)
-    }
+    addThreadToForum: appendChildToParentMutation({child: 'posts'})
   }
 }

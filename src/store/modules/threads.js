@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import sourceData from '@/data'
+import {appendChildToParentMutation} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -18,8 +19,8 @@ export default {
         const threadId = 'bestThread--' + Math.random()
         const thread = {'.key': threadId, title, forumId, publishedAt, userId}
         commit('addThread', {thread, threadId})
-        commit('users/addThreadToUser', {userId, threadId}, {root: true})
-        commit('forums/addThreadToForum', {forumId, threadId}, {root: true})
+        commit('users/addThreadToUser', {parentId: userId, childId: threadId}, {root: true})
+        commit('forums/addThreadToForum', {parentId: forumId, childId: threadId}, {root: true})
 
         dispatch('posts/create', {text, threadId}, {root: true})
           .then(post => {
@@ -48,12 +49,6 @@ export default {
       Vue.set(state.items, threadId, thread)
     },
 
-    addPostToThread (state, {postId, threadId}) {
-      const thread = state.items[threadId]
-      if (!thread.posts) {
-        Vue.set(thread, 'posts', {})
-      }
-      Vue.set(thread.posts, postId, postId)
-    }
+    addPostToThread: appendChildToParentMutation({child: 'posts'})
   }
 }
