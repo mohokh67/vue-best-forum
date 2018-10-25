@@ -12,7 +12,7 @@
       </router-link>
     </h1>
     <p>By
-      <a href="#" class="link-unstyled">MoHo</a> <AppDate :timestamp="thread.publishedAt" />
+      <a href="#" class="link-unstyled">{{user.name}}</a> <AppDate :timestamp="thread.publishedAt" />
       <span class="hide-mobile text-faded text-small">{{repliedCount}} replies by {{contributersCount}} contributers</span>
     </p>
     <PostList :posts="posts"/>
@@ -42,10 +42,15 @@
     },
 
     computed: {
-      ...mapGetters('threads', {
-        'threadRepliesTotal': 'threadRepliesCount',
-        'findThread': 'findThread'
+      ...mapGetters({
+        'threadRepliesTotal': 'threads/threadRepliesCount',
+        'findThread': 'threads/findThread',
+        'findUser': 'users/findUser'
       }),
+
+      user () {
+        return this.findUser(this.thread.userId)
+      },
 
       repliedCount () {
         return this.threadRepliesTotal(this.thread['.key'])
