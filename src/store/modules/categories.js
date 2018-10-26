@@ -1,10 +1,9 @@
-import sourceData from '@/data'
-
 export default {
   namespaced: true,
 
   state: {
-    items: sourceData.categories
+    // items: sourceData.categories
+    items: {}
   },
 
   getters: { },

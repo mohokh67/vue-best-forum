@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import sourceData from '@/data'
 import {countObjectProperties, appendChildToParentMutation} from '@/helpers'
 
 export default {
   namespaced: true,
 
   state: {
-    items: sourceData.threads
+    // items: sourceData.threads
+    items: {}
   },
 
   getters: {
@@ -44,6 +44,10 @@ export default {
             resolve(newThread)
           })
       })
+    },
+
+    fetchThread ({dispatch}, {id}) {
+      return dispatch('fetchItem', {resource: 'threads', id, action: 'finding thread'}, {root: true})
     }
   },
 

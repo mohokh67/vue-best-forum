@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import sourceData from '@/data'
 import {currentTimestamp} from '@/helpers'
 
 export default {
   namespaced: true,
 
   state: {
-    items: sourceData.posts
+    // items: sourceData.posts
+    items: {}
   },
 
   getters: { },
@@ -40,6 +40,10 @@ export default {
         })
         resolve(post)
       })
+    },
+
+    fetchPost ({dispatch}, {id}) {
+      return dispatch('fetchItem', {resource: 'posts', id, action: 'finding post'}, {root: true})
     }
   },
 

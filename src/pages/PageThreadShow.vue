@@ -1,6 +1,5 @@
 <template>
-
-  <div class="col-large push-top">
+  <div v-if="thread && user" class="col-large push-top">
     <h1>
       {{ thread.title }}
       <router-link
@@ -57,6 +56,7 @@
       },
 
       contributersCount () {
+        // return countObjectProperties(this.thread.contributers)
         const replies = Object.keys(this.thread.posts)
           .filter(postId => postId !== this.thread.firstPostId)
           .map(postId => this.$store.state.posts.items[postId])
@@ -75,6 +75,24 @@
         return Object.values(this.$store.state.posts.items)
           .filter(post => postIds.includes(post['.key']))
       }
+    },
+
+    created () {
+      // fetch thread
+      this.$store.dispatch('threads/fetchThread', {id: this.id}, {root: true})
+        .then(thread => {
+          // fetch user
+          this.$store.dispatch('users/fetchUser', {id: thread.userId}, {root: true})
+
+          Object.keys(thread.posts).forEach(postId => {
+            // fetch post
+            this.$store.dispatch('posts/fetchPost', {id: postId}, {root: true})
+              .then(post => {
+                // fetch user
+                this.$store.dispatch('users/fetchUser', {id: post.userId}, {root: true})
+              })
+          })
+        })
     }
   }
 </script>
