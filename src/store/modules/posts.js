@@ -1,11 +1,9 @@
-import Vue from 'vue'
 import {currentTimestamp} from '@/helpers'
 
 export default {
   namespaced: true,
 
   state: {
-    // items: sourceData.posts
     items: {}
   },
 

@@ -17,6 +17,14 @@
       categories () {
         return Object.values(this.$store.state.categories.items)
       }
+    },
+
+    beforeCreate () {
+      this.$store.dispatch('categories/fetchAllCategories', {}, {root: true})
+        .then(categories => {
+          categories.forEach(category => this.$store.dispatch('forums/fetchForums', {ids: Object.keys(category.forums)}, {root: true}))
+        })
     }
+
   }
 </script>

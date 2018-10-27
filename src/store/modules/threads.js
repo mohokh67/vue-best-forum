@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import {countObjectProperties, appendChildToParentMutation} from '@/helpers'
 
 export default {

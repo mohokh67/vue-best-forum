@@ -10,7 +10,12 @@ export default {
 
   getters: { },
 
-  actions: { },
+  actions: {
+
+    fetchForums ({dispatch}, {ids}) {
+      return dispatch('fetchItems', {ids, resource: 'forums'}, {root: true})
+    }
+  },
 
   mutations: {
     addThreadToForum: appendChildToParentMutation({child: 'posts'})
