@@ -25,7 +25,7 @@ export default new Vuex.Store({
   actions: {
 
     // from firebase
-    fetchItem ({state, commit}, {id, action, resource}) {
+    fetchItem ({state, commit}, {id, resource}) {
       console.log('🔥‍', `In ${resource} looking for id: ${id}`)
       return new Promise((resolve, reject) => {
         const ref = firebase.database().ref(resource)
@@ -35,6 +35,10 @@ export default new Vuex.Store({
           resolve(state[resource].items[id])
         })
       })
+    },
+
+    fetchItems ({dispatch}, {ids, resource}) {
+      return Promise.all(ids.map(id => dispatch('fetchItem', {id, resource})))
     }
 
   },

@@ -43,13 +43,17 @@ export default {
     },
 
     fetchPost ({dispatch}, {id}) {
-      return dispatch('fetchItem', {resource: 'posts', id, action: 'finding post'}, {root: true})
+      return dispatch('fetchItem', {resource: 'posts', id}, {root: true})
+    },
+
+    fetchPosts ({dispatch}, {ids}) {
+      return dispatch('fetchItems', {ids, resource: 'posts'}, {root: true})
     }
   },
 
   mutations: {
-    addPost (state, {post, postId}) {
-      Vue.set(state.items, postId, post)
-    }
+    // addPost (state, {post, postId}) {
+    //   Vue.set(state.items, postId, post)
+    // }
   }
 }

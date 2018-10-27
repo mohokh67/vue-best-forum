@@ -28,7 +28,7 @@ export default {
     },
 
     fetchUser ({dispatch}, {id}) {
-      return dispatch('fetchItem', {resource: 'users', id, action: 'finding post'}, {root: true})
+      return dispatch('fetchItem', {resource: 'users', id}, {root: true})
     }
   },
 

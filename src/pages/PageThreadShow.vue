@@ -74,24 +74,19 @@
     methods: {
       ...mapActions('threads', ['fetchThread']),
       ...mapActions('users', ['fetchUser']),
-      ...mapActions('posts', ['fetchPost'])
+      ...mapActions('posts', ['fetchPost', 'fetchPosts'])
     },
 
     created () {
-      // fetch thread
       this.fetchThread({id: this.id})
         .then(thread => {
-          // fetch user
           this.fetchUser({id: thread.userId})
-
-          Object.keys(thread.posts).forEach(postId => {
-            // fetch post
-            this.fetchPost({id: postId})
-              .then(post => {
-                // fetch user
+          this.fetchPosts({ids: Object.keys(thread.posts)})
+            .then(posts => {
+              posts.forEach(post => {
                 this.fetchUser({id: post.userId})
               })
-          })
+            })
         })
     }
   }

@@ -47,14 +47,14 @@ export default {
     },
 
     fetchThread ({dispatch}, {id}) {
-      return dispatch('fetchItem', {resource: 'threads', id, action: 'finding thread'}, {root: true})
+      return dispatch('fetchItem', {resource: 'threads', id}, {root: true})
     }
   },
 
   mutations: {
-    addThread (state, {threadId, thread}) {
-      Vue.set(state.items, threadId, thread)
-    },
+    // addThread (state, {threadId, thread}) {
+    //   Vue.set(state.items, threadId, thread)
+    // },
 
     addPostToThread: appendChildToParentMutation({child: 'posts'})
   }
