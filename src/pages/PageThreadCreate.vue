@@ -32,9 +32,10 @@
 
     methods: {
       ...mapActions('forums', ['fetchForum']),
+      ...mapActions('threads', ['createThread']),
 
       save ({title, text}) {
-        this.$store.dispatch('threads/createThread', {
+        this.createThread({
           forumId: this.forum['.key'],
           text,
           title

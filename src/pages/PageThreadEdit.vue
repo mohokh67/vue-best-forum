@@ -38,11 +38,11 @@
     },
 
     methods: {
-      ...mapActions('threads', ['fetchThread']),
+      ...mapActions('threads', ['fetchThread', 'updateThread']),
       ...mapActions('posts', ['fetchPost']),
 
       save ({title, text}) {
-        this.$store.dispatch('threads/updateThread', {
+        this.updateThread({
           id: this.id,
           text,
           title
