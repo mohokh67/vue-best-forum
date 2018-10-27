@@ -1,5 +1,5 @@
 <template>
-  <div class="col-full">
+  <div v-if="category" class="col-full">
     <h1>{{category.name}}</h1>
     <CategoryListItem :category="category" />
   </div>
@@ -7,6 +7,8 @@
 
 <script>
   import CategoryListItem from '@/components/CategoryListItem'
+  import {mapActions} from 'vuex'
+
   export default {
     components: {
       CategoryListItem
@@ -17,11 +19,25 @@
         type: String
       }
     },
+
     computed: {
       category () {
         return this.$store.state.categories.items[this.id]
       }
+    },
+
+    methods: {
+      ...mapActions('categories', ['fetchCategory']),
+      ...mapActions('forums', ['fetchForums'])
+    },
+
+    created () {
+      this.fetchCategory({id: this.id})
+        .then(category => {
+          this.fetchForums({ids: category.forums})
+        })
     }
+
   }
 </script>
 
