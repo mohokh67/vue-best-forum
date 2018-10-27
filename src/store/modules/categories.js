@@ -11,6 +11,10 @@ export default {
 
   actions: {
 
+    fetchCategory ({dispatch}, {id}) {
+      return dispatch('fetchItem', {resource: 'categories', id}, {root: true})
+    },
+
     fetchAllCategories ({state, commit}) {
       const resource = 'categories'
       console.log('🔥‍', `All ${resource}`)

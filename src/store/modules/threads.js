@@ -47,6 +47,10 @@ export default {
 
     fetchThread ({dispatch}, {id}) {
       return dispatch('fetchItem', {resource: 'threads', id}, {root: true})
+    },
+
+    fetchThreads ({dispatch}, {ids}) {
+      return dispatch('fetchItems', {ids, resource: 'threads'}, {root: true})
     }
   },
 

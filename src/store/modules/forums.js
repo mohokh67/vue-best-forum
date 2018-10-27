@@ -12,6 +12,10 @@ export default {
 
   actions: {
 
+    fetchForum ({dispatch}, {id}) {
+      return dispatch('fetchItem', {resource: 'forums', id}, {root: true})
+    },
+
     fetchForums ({dispatch}, {ids}) {
       return dispatch('fetchItems', {ids, resource: 'forums'}, {root: true})
     }
