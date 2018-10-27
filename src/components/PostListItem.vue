@@ -5,7 +5,7 @@
       <a href="#">
         <img :src="user.avatar" class="avatar-large">
       </a>
-      <p class="destop-only text-small">{{userThreadsCount}} posts</p>
+      <p class="destop-only text-small">{{userThreadsCount}} threads</p>
       <p class="destop-only text-small">{{userPostsCount}} posts</p>
     </div>
     <div class="post-content">

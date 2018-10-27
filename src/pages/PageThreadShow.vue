@@ -26,7 +26,8 @@
 <script>
   import PostList from '@/components/PostList'
   import PostEditor from '@/components/PostEditor'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
+  import {countObjectProperties} from '@/helpers'
 
   export default {
     components: {
@@ -56,14 +57,7 @@
       },
 
       contributersCount () {
-        // return countObjectProperties(this.thread.contributers)
-        const replies = Object.keys(this.thread.posts)
-          .filter(postId => postId !== this.thread.firstPostId)
-          .map(postId => this.$store.state.posts.items[postId])
-
-        const userIds = replies.map(post => post.userId)
-
-        return userIds.filter((item, index) => index === userIds.indexOf(item)).length
+        return countObjectProperties(this.thread.contributers)
       },
 
       thread () {
@@ -77,19 +71,25 @@
       }
     },
 
+    methods: {
+      ...mapActions('threads', ['fetchThread']),
+      ...mapActions('users', ['fetchUser']),
+      ...mapActions('posts', ['fetchPost'])
+    },
+
     created () {
       // fetch thread
-      this.$store.dispatch('threads/fetchThread', {id: this.id}, {root: true})
+      this.fetchThread({id: this.id})
         .then(thread => {
           // fetch user
-          this.$store.dispatch('users/fetchUser', {id: thread.userId}, {root: true})
+          this.fetchUser({id: thread.userId})
 
           Object.keys(thread.posts).forEach(postId => {
             // fetch post
-            this.$store.dispatch('posts/fetchPost', {id: postId}, {root: true})
+            this.fetchPost({id: postId})
               .then(post => {
                 // fetch user
-                this.$store.dispatch('users/fetchUser', {id: post.userId}, {root: true})
+                this.fetchUser({id: post.userId})
               })
           })
         })

@@ -26,14 +26,13 @@ export default new Vuex.Store({
 
     // from firebase
     fetchItem ({state, commit}, {id, action, resource}) {
-      console.log(`firing ${action} - ${id}`)
+      console.log('🔥‍', `In ${resource} looking for id: ${id}`)
       return new Promise((resolve, reject) => {
-        console.log(resource)
-        console.log(firebase.database().ref(resource))
-        firebase.database().ref(resource).child(id).once('value', snapshot => {
-          console.log(snapshot.val())
+        const ref = firebase.database().ref(resource)
+        console.log('URL:', ref.child(id).toString())
+        ref.child(id).once('value', snapshot => {
           commit('setItem', {resource, id: snapshot.key, item: snapshot.val()})
-          resolve(state[resource][id])
+          resolve(state[resource].items[id])
         })
       })
     }
@@ -44,7 +43,7 @@ export default new Vuex.Store({
 
     setItem: (state, {item, id, resource}) => {
       item['.key'] = id
-      Vue.set(state[resource], id, item)
+      Vue.set(state[resource].items, id, item)
     }
 
   }

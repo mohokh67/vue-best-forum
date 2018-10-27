@@ -12,6 +12,9 @@ Vue.component('AppDate', AppDate)
 Vue.config.productionTip = false
 // Vue.config.silent = true
 
+/*
+* Make sure the 'read' and 'write' are 'true' in firebase rule
+*/
 firebase.initializeApp(config)
 
 /* eslint-disable no-new */
