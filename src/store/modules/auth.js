@@ -6,9 +6,9 @@ export default {
   },
 
   getters: {
-    authUser (state) {
-      // return state.items[state.authId]
-      return {}
+    authUser (state, getters, rootState) {
+      return rootState.users.items[state.authId]
+      // return {}
     }
 
   },
