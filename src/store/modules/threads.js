@@ -1,3 +1,4 @@
+import firebase from 'firebase'
 import {countObjectProperties, appendChildToParentMutation} from '@/helpers'
 
 export default {
@@ -17,17 +18,33 @@ export default {
       return new Promise((resolve, reject) => {
         const publishedAt = Math.floor(Date.now() / 1000)
         const userId = rootState.auth.authId
-        const threadId = 'bestThread--' + Math.random()
-        const thread = {'.key': threadId, title, forumId, publishedAt, userId}
-        commit('setItem', {item: thread, id: threadId, resource: 'threads'}, {root: true})
-        commit('users/addThreadToUser', {parentId: userId, childId: threadId}, {root: true})
-        commit('forums/addThreadToForum', {parentId: forumId, childId: threadId}, {root: true})
+        const threadId = firebase.database().ref('threads').push().key
+        const postId = firebase.database().ref('posts').push().key
 
-        dispatch('posts/create', {text, threadId}, {root: true})
-          .then(post => {
-            commit('setItem', {id: threadId, item: {...thread, firstPostId: post['.key']}, resource: 'threads'}, {root: true})
+        const thread = {title, forumId, publishedAt, userId, firstPostId: postId, posts: {}}
+        thread.posts[postId] = postId
+        const post = {text, publishedAt, threadId, userId}
+
+        const updates = {}
+        updates[`threads/${threadId}`] = thread
+        updates[`forum/${forumId}/threads/${threadId}`] = threadId
+        updates[`users/${userId}/threads/${threadId}`] = threadId
+
+        updates[`posts/${postId}`] = post
+        updates[`users/${userId}/posts/${postId}`] = postId
+        firebase.database().ref().update(updates)
+          .then(() => {
+            // thread
+            commit('setItem', {item: thread, id: threadId, resource: 'threads'}, {root: true})
+            commit('users/addThreadToUser', {parentId: userId, childId: threadId}, {root: true})
+            commit('forums/addThreadToForum', {parentId: forumId, childId: threadId}, {root: true})
+            // post
+            commit('setItem', {item: post, id: postId, resource: 'posts'}, {root: true})
+            commit('threads/addPostToThread', {childId: postId, parentId: post.threadId}, {root: true})
+            commit('users/addPostToUser', {parentId: post.userId, childId: postId}, {root: true})
+
+            resolve(state.items[threadId])
           })
-        resolve(state.items[threadId])
       })
     },
 
