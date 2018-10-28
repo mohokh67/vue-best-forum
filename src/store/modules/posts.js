@@ -1,3 +1,4 @@
+import firebase from 'firebase'
 import {currentTimestamp} from '@/helpers'
 
 export default {
@@ -11,15 +12,21 @@ export default {
 
   actions: {
     create ({commit, state, rootState}, post) {
-      const postId = 'greatPost' + Math.random()
-      post['.key'] = postId
+      const postId = firebase.database().ref('posts').push().key
       post.publishedAt = currentTimestamp()
       post.userId = rootState.auth.authId
 
-      commit('setItem', {item: post, id: postId, resource: 'posts'}, {root: true})
-      commit('threads/addPostToThread', {childId: postId, parentId: post.threadId}, {root: true})
-      commit('users/addPostToUser', {parentId: post.userId, childId: postId}, {root: true})
-      return Promise.resolve(state.items[postId])
+      const updates = {}
+      updates[`posts/${postId}`] = post
+      updates[`threads/${post.threadId}/posts/${postId}`] = postId
+      updates[`users/${post.userId}/posts/${postId}`] = postId
+      firebase.database().ref().update(updates)
+        .then(() => {
+          commit('setItem', {item: post, id: postId, resource: 'posts'}, {root: true})
+          commit('threads/addPostToThread', {childId: postId, parentId: post.threadId}, {root: true})
+          commit('users/addPostToUser', {parentId: post.userId, childId: postId}, {root: true})
+          return Promise.resolve(state.items[postId])
+        })
     },
 
     update ({commit, state, rootState}, {id, text}) {
