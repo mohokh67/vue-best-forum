@@ -14,7 +14,7 @@ export default {
       const postId = 'greatPost' + Math.random()
       post['.key'] = postId
       post.publishedAt = currentTimestamp()
-      post.userId = rootState.users.authId
+      post.userId = rootState.auth.authId
 
       commit('setItem', {item: post, id: postId, resource: 'posts'}, {root: true})
       commit('threads/addPostToThread', {childId: postId, parentId: post.threadId}, {root: true})
@@ -28,7 +28,7 @@ export default {
         const updatedPost = {
           ...post,
           text,
-          edited: {at: currentTimestamp(), by: rootState.users.authId}
+          edited: {at: currentTimestamp(), by: rootState.auth.authId}
         }
         commit('setItem', {id, item: updatedPost, resource: 'posts'}, {root: true})
         resolve(post)

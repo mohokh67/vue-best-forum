@@ -50,7 +50,7 @@
   import {mapGetters} from 'vuex'
   export default {
     computed: {
-      ...mapGetters('users', {
+      ...mapGetters('auth', {
         'user': 'authUser'
       })
     }

@@ -7,6 +7,7 @@ import forums from './modules/forums'
 import threads from './modules/threads'
 import posts from './modules/posts'
 import users from './modules/users'
+import auth from './modules/auth'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     forums,
     threads,
     posts,
-    users
+    users,
+    auth
   },
 
   state: {},
@@ -29,7 +31,7 @@ export default new Vuex.Store({
       console.log('🔥‍', `In ${resource} looking for id: ${id}`)
       return new Promise((resolve, reject) => {
         const ref = firebase.database().ref(resource)
-        console.log('URL:', ref.child(id).toString())
+        // console.log('URL:', ref.child(id).toString())
         ref.child(id).once('value', snapshot => {
           commit('setItem', {resource, id: snapshot.key, item: snapshot.val()})
           resolve(state[resource].items[id])

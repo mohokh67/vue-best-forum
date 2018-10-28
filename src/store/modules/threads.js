@@ -16,7 +16,7 @@ export default {
     createThread ({state, commit, dispatch, rootState}, {text, title, forumId}) {
       return new Promise((resolve, reject) => {
         const publishedAt = Math.floor(Date.now() / 1000)
-        const userId = rootState.users.authId
+        const userId = rootState.auth.authId
         const threadId = 'bestThread--' + Math.random()
         const thread = {'.key': threadId, title, forumId, publishedAt, userId}
         commit('setItem', {item: thread, id: threadId, resource: 'threads'}, {root: true})

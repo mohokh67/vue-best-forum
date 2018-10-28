@@ -42,7 +42,7 @@
     },
 
     computed: {
-      ...mapGetters('users', {
+      ...mapGetters('auth', {
         'user': 'authUser'
       }),
 
