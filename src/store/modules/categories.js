@@ -11,9 +11,7 @@ export default {
 
   actions: {
 
-    fetchCategory ({dispatch}, {id}) {
-      return dispatch('fetchItem', {resource: 'categories', id}, {root: true})
-    },
+    fetchCategory: ({dispatch}, {id}) => dispatch('fetchItem', {resource: 'categories', id}, {root: true}),
 
     fetchAllCategories ({state, commit}) {
       const resource = 'categories'

@@ -4,7 +4,6 @@ export default {
   namespaced: true,
 
   state: {
-    // items: sourceData.threads
     items: {}
   },
 
@@ -20,24 +19,24 @@ export default {
         const userId = rootState.users.authId
         const threadId = 'bestThread--' + Math.random()
         const thread = {'.key': threadId, title, forumId, publishedAt, userId}
-        commit('addThread', {thread, threadId})
+        commit('setItem', {item: thread, id: threadId, resource: 'threads'}, {root: true})
         commit('users/addThreadToUser', {parentId: userId, childId: threadId}, {root: true})
         commit('forums/addThreadToForum', {parentId: forumId, childId: threadId}, {root: true})
 
         dispatch('posts/create', {text, threadId}, {root: true})
           .then(post => {
-            commit('addThread', {threadId, thread: {...thread, firstPostId: post['.key']}})
+            commit('setItem', {id: threadId, item: {...thread, firstPostId: post['.key']}, resource: 'threads'}, {root: true})
           })
         resolve(state.items[threadId])
       })
     },
 
-    updateThread ({state, commit, dispatch, rootState}, {id, text, title}) {
+    updateThread ({state, commit, dispatch}, {id, text, title}) {
       return new Promise((resolve, reject) => {
         const thread = state.items[id]
         const newThread = {...thread, title}
 
-        commit('addThread', {thread: newThread, threadId: id})
+        commit('setItem', {item: newThread, threadId: id, resource: 'threads'}, {root: true})
         dispatch('posts/update', {id: thread.firstPostId, text}, {root: true})
           .then(() => {
             resolve(newThread)
@@ -45,20 +44,11 @@ export default {
       })
     },
 
-    fetchThread ({dispatch}, {id}) {
-      return dispatch('fetchItem', {resource: 'threads', id}, {root: true})
-    },
-
-    fetchThreads ({dispatch}, {ids}) {
-      return dispatch('fetchItems', {ids, resource: 'threads'}, {root: true})
-    }
+    fetchThread: ({dispatch}, {id}) => dispatch('fetchItem', {resource: 'threads', id}, {root: true}),
+    fetchThreads: ({dispatch}, {ids}) => dispatch('fetchItems', {ids, resource: 'threads'}, {root: true})
   },
 
   mutations: {
-    // addThread (state, {threadId, thread}) {
-    //   Vue.set(state.items, threadId, thread)
-    // },
-
     addPostToThread: appendChildToParentMutation({child: 'posts'})
   }
 }

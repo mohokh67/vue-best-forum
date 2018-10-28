@@ -5,7 +5,6 @@ export default {
   namespaced: true,
 
   state: {
-    // items: sourceData.users,
     items: {},
     authId: 'VXjpr2WHa8Ux4Bnggym8QFLdv5C3'
   },
@@ -27,13 +26,9 @@ export default {
       commit('updateUser', {user, userId: user['.key']})
     },
 
-    fetchUser ({dispatch}, {id}) {
-      return dispatch('fetchItem', {resource: 'users', id}, {root: true})
-    },
+    fetchUser: ({dispatch}, {id}) => dispatch('fetchItem', {resource: 'users', id}, {root: true}),
+    fetchUsers: ({dispatch}, {ids}) => dispatch('fetchItems', {ids, resource: 'users'}, {root: true})
 
-    fetchUsers ({dispatch}, {ids}) {
-      return dispatch('fetchItems', {ids, resource: 'users'}, {root: true})
-    }
   },
 
   mutations: {

@@ -4,21 +4,14 @@ export default {
   namespaced: true,
 
   state: {
-    // items: sourceData.forums
     items: {}
   },
 
-  getters: { },
+  getters: {},
 
   actions: {
-
-    fetchForum ({dispatch}, {id}) {
-      return dispatch('fetchItem', {resource: 'forums', id}, {root: true})
-    },
-
-    fetchForums ({dispatch}, {ids}) {
-      return dispatch('fetchItems', {ids, resource: 'forums'}, {root: true})
-    }
+    fetchForum: ({dispatch}, {id}) => dispatch('fetchItem', {resource: 'forums', id}, {root: true}),
+    fetchForums: ({dispatch}, {ids}) => dispatch('fetchItems', {ids, resource: 'forums'}, {root: true})
   },
 
   mutations: {
