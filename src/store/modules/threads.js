@@ -27,7 +27,7 @@ export default {
 
         const updates = {}
         updates[`threads/${threadId}`] = thread
-        updates[`forum/${forumId}/threads/${threadId}`] = threadId
+        updates[`forums/${forumId}/threads/${threadId}`] = threadId
         updates[`users/${userId}/threads/${threadId}`] = threadId
 
         updates[`posts/${postId}`] = post
