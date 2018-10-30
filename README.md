@@ -28,6 +28,27 @@ npm run build --report
 * Make sure the `src/config/firebase.js` has the right configs for firebase realtime database
 * Make sure the `read` and `write` are `true` in firebase rules configuration for `development` purposes and then choose the right config in `production`
 
+### firebase cli
+
+> This step is not required
+```
+# Install firebase cli globally with this command:
+npm install -g firebase-tools
+
+# Login
+firebase login
+
+# Initialise the firebase project with project
+# In the root directory of project:
+firebase init
+
+# Choose the required options
+
+# Reset the database with this command:
+firebase database:set / src/data.json
+```
+
+
 ## Other
 
 * I used [spinKit](http://tobiasahlin.com/spinkit/) for app loading spinner
