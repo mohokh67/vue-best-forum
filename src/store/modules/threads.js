@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import {countObjectProperties, appendChildToParentMutation} from '@/helpers'
+import {countObjectProperties, appendChildToParentMutation, currentTimestamp} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -48,14 +48,23 @@ export default {
       })
     },
 
-    updateThread ({state, commit, dispatch}, {id, text, title}) {
+    updateThread ({state, commit, rootState}, {id, text, title}) {
       return new Promise((resolve, reject) => {
         const thread = state.items[id]
-        const newThread = {...thread, title}
+        const post = rootState.posts.items[thread.firstPostId]
+        const edited = {at: currentTimestamp(), by: rootState.auth.authId}
 
-        commit('setItem', {item: newThread, threadId: id, resource: 'threads'}, {root: true})
-        dispatch('posts/update', {id: thread.firstPostId, text}, {root: true})
+        const newThread = {...thread, title}
+        const newPost = {...post, text, edited}
+
+        const updates = {}
+        updates[`posts/${thread.firstPostId}/text`] = text
+        updates[`posts/${thread.firstPostId}/edited`] = edited
+        updates[`threads/${id}/title`] = title
+        firebase.database().ref().update(updates)
           .then(() => {
+            commit('setItem', {item: newThread, id, resource: 'threads'}, {root: true})
+            commit('setItem', {item: newPost, id: thread.firstPostId, resource: 'posts'}, {root: true})
             resolve(newThread)
           })
       })
