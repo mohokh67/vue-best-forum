@@ -66,6 +66,7 @@ export default {
   },
 
   mutations: {
-    addPostToThread: appendChildToParentMutation({child: 'posts'})
+    addPostToThread: appendChildToParentMutation({child: 'posts'}),
+    addContributorToThread: appendChildToParentMutation({child: 'contributors'})
   }
 }

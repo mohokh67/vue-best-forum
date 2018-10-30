@@ -57,7 +57,7 @@
       },
 
       contributersCount () {
-        return countObjectProperties(this.thread.contributers)
+        return countObjectProperties(this.thread.contributors)
       },
 
       thread () {

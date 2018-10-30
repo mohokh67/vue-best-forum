@@ -19,11 +19,13 @@ export default {
       const updates = {}
       updates[`posts/${postId}`] = post
       updates[`threads/${post.threadId}/posts/${postId}`] = postId
+      updates[`threads/${post.threadId}/contributors/${post.userId}`] = post.userId
       updates[`users/${post.userId}/posts/${postId}`] = postId
       firebase.database().ref().update(updates)
         .then(() => {
           commit('setItem', {item: post, id: postId, resource: 'posts'}, {root: true})
           commit('threads/addPostToThread', {childId: postId, parentId: post.threadId}, {root: true})
+          commit('threads/addContributorToThread', {childId: post.userId, parentId: post.threadId}, {root: true})
           commit('users/addPostToUser', {parentId: post.userId, childId: postId}, {root: true})
           return Promise.resolve(state.items[postId])
         })
