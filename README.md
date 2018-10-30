@@ -31,7 +31,7 @@ npm run build --report
 ## Other
 
 * I used [spinKit](http://tobiasahlin.com/spinkit/) for app loading spinner
-
+* I used [nprogress](https://github.com/rstacruz/nprogress) package for progress bar before navbar while loading
 
 ## More info
 
