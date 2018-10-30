@@ -9,7 +9,11 @@
 </template>
 
 <script>
-    export default {}
+    export default {
+      created () {
+        this.$emit('ready') // Stop showing loading
+      }
+    }
 </script>
 
 <style module>
