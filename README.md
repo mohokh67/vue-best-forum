@@ -28,6 +28,11 @@ npm run build --report
 * Make sure the `src/config/firebase.js` has the right configs for firebase realtime database
 * Make sure the `read` and `write` are `true` in firebase rules configuration for `development` purposes and then choose the right config in `production`
 
+## Other
+
+* I used [spinKit](http://tobiasahlin.com/spinkit/) for app loading spinner
+
+
 ## More info
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
