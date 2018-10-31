@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store'
 import Home from '@/pages/PageHome'
 import ThreadShow from '@/pages/PageThreadShow'
 import ThreadCreate from '@/pages/PageThreadCreate'
@@ -63,10 +64,21 @@ export default new Router({
       component: SignIn
     },
     {
+      path: '/signout',
+      name: 'SignOut',
+      beforeEnter (to, from, next) {
+        store.dispatch('auth/signOut', {}, {root: true})
+          .then(() => { next({name: 'Home'}) })
+      }
+    },
+    {
       path: '/profile',
       name: 'Profile',
       component: Profile,
-      props: true
+      props: true,
+      beforeEnter (to, from, next) {
+        store.state.auth.authId ? next() : next({name: 'Home'})
+      }
     },
     {
       path: '/profile/edit',
