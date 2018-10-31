@@ -16,8 +16,13 @@
     </p>
     <PostList :posts="posts"/>
     <PostEditor
-    :threadId="id"
+      v-if="authUser"
+      :threadId="id"
     />
+    <div v-else class="text-center">
+      <router-link :to="{name: 'SignIn', query: {redirectTo: $route.path}}">Sign in</router-link> or
+      <router-link :to="{name: 'Register', query: {redirectTo: $route.path}}">Register</router-link> to post a reply
+    </div>
 
   </div>
 </template>
@@ -50,6 +55,10 @@
         'threadRepliesTotal': 'threads/threadRepliesCount',
         'findThread': 'threads/findThread',
         'findUser': 'users/findUser'
+      }),
+
+      ...mapGetters({
+        authUser: 'auth/authUser'
       }),
 
       user () {

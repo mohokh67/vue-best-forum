@@ -61,12 +61,17 @@
 
       register () {
         this.registerUserWithEmailAndPassword(this.form)
-          .then(() => this.$router.push({name: 'Home'}))
+          .then(() => this.successRedirect())
       },
 
       registerWithGoogle () {
         this.signInWithGoogle()
-          .then(() => this.$router.push({name: 'Home'}))
+          .then(() => this.successRedirect())
+      },
+
+      successRedirect () {
+        const redirectTo = this.$route.query.redirectTo || {name: 'Home'}
+        this.$router.push(redirectTo)
       }
     },
 
