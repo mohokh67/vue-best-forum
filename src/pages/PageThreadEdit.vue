@@ -2,6 +2,7 @@
   <div v-if="asyncDataStatus_ready" class="col-full push-top">
     <h1>Editing <em>{{thread.title}}</em></h1>
     <ThreadEditor
+      ref="editor"
       :title="thread.title"
       :text="text"
       @save="save"
@@ -37,6 +38,10 @@
       text () {
         const post = this.$store.state.posts.items[this.thread.firstPostId]
         return post ? post.text : null
+      },
+
+      hasUnsavedChanges () {
+        return this.thread.title !== this.$refs.editor.form.title || this.text !== this.$refs.editor.form.text
       }
     },
 
@@ -65,6 +70,15 @@
         .then(() => {
           this.asyncDataStatus_fetched()
         })
+    },
+
+    beforeRouteLeave (to, from, next) {
+      if (this.hasUnsavedChanges) {
+        const confirmed = window.confirm('Are you sure you want to leave without saving?')
+        confirmed ? next() : next(false)
+      } else {
+        next()
+      }
     }
   }
 </script>

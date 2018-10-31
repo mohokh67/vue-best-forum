@@ -26,6 +26,7 @@
   import { mapGetters } from 'vuex'
   import UserProfileCard from '@/components/UserProfileCard'
   import UserProfileCardEdit from '@/components/UserProfileCardEdit'
+  import store from '@/store'
 
   export default {
     components: {
@@ -53,6 +54,14 @@
         }
 
         return []
+      }
+    },
+
+    beforeRouteEnter (to, from, next) {
+      if (store.state.auth.authId) {
+        next()
+      } else {
+        next({name: 'Home'})
       }
     }
 
