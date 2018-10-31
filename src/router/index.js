@@ -39,6 +39,7 @@ const router = new Router({
       path: '/thread/create/:forumId',
       name: 'ThreadCreate',
       component: ThreadCreate,
+      meta: {requiredAuth: true},
       props: true // accept props from route
     },
     {
@@ -51,21 +52,25 @@ const router = new Router({
       path: '/thread/:id/edit',
       name: 'ThreadEdit',
       component: ThreadEdit,
+      meta: {requiredAuth: true},
       props: true // accept props from route
     },
     {
       path: '/register',
       name: 'Register',
+      meta: {requiredGuest: true},
       component: Register
     },
     {
       path: '/signin',
       name: 'SignIn',
+      meta: {requiredGuest: true},
       component: SignIn
     },
     {
       path: '/signout',
       name: 'SignOut',
+      meta: {requiredAuth: true},
       beforeEnter (to, from, next) {
         store.dispatch('auth/signOut', {}, {root: true})
           .then(() => { next({name: 'Home'}) })
@@ -82,6 +87,7 @@ const router = new Router({
       path: '/profile/edit',
       name: 'ProfileEdit',
       component: Profile,
+      meta: {requiredAuth: true},
       props: {edit: true}
     },
     {
@@ -98,11 +104,16 @@ router.beforeEach((to, from, next) => {
   // to.meta.requiredAuth
   // will only work with the specific route, not with any nested routes
 
-  if (to.matched.some(route => route.meta.requiredAuth)) {
-    store.state.auth.authId ? next() : next({name: 'Home'})
-  } else {
-    next()
-  }
+  store.dispatch('auth/initAuthentication', {}, {root: true})
+    .then(user => {
+      if (to.matched.some(route => route.meta.requiredAuth)) {
+        user ? next() : next({name: 'SignIn'})
+      } else if (to.matched.some(route => route.meta.requiredGuest)) {
+        user ? next({name: 'Home'}) : next()
+      } else {
+        next()
+      }
+    })
 })
 
 export default router

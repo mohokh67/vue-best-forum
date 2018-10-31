@@ -3,7 +3,8 @@ export default {
   namespaced: true,
 
   state: {
-    authId: null
+    authId: null,
+    unsubscribeAuthObserver: null
   },
 
   getters: {
@@ -15,12 +16,30 @@ export default {
 
   actions: {
 
+    initAuthentication ({dispatch, commit, state}) {
+      return new Promise((resolve, reject) => {
+        if (state.unsubscribeAuthObserver) {
+          state.unsubscribeAuthObserver()
+        }
+
+        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            dispatch('fetchAuthUser')
+              .then(dbUser => resolve(dbUser))
+          } else {
+            resolve(null)
+          }
+        })
+        commit('setUnsubscribeAuthObserver', unsubscribe)
+      })
+    },
+
     registerUserWithEmailAndPassword ({dispatch}, {email, password, name, username, avatar = null}) {
       return firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(data => {
           return dispatch('users/createUser', {id: data.user.uid, email, password, name, username, avatar}, {root: true})
         })
-        .then(() => { dispatch('auth/fetchAuthUser', {}, {root: true}) })
+        .then(() => { dispatch('fetchAuthUser') })
     },
 
     signInUserWithEmailAndPassword (context, {email, password}) {
@@ -44,7 +63,7 @@ export default {
                   avatar: user.photoURL
                 },
                 {root: true}
-                ).then(() => { dispatch('auth/fetchAuthUser', {}, {root: true}) })
+                ).then(() => { dispatch('fetchAuthUser') })
             }
           })
         })
@@ -79,6 +98,10 @@ export default {
   mutations: {
     setAuthId (state, id) {
       state.authId = id
+    },
+
+    setUnsubscribeAuthObserver (state, unsubscribe) {
+      state.unsubscribeAuthObserver = unsubscribe
     }
   }
 }
