@@ -44,7 +44,7 @@ firebase init
 
 # Choose the required options
 
-# Reset the database with this command:
+# Seed the database with this command:
 firebase database:set / src/data.json
 ```
 

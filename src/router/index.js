@@ -8,6 +8,8 @@ import NotFound from '@/pages/PageNotFound'
 import Forum from '@/pages/PageForum'
 import Profile from '@/pages/PageProfile'
 import Category from '@/pages/PageCategory'
+import Login from '@/pages/PageLogin'
+import Register from '@/pages/PageRegister'
 
 Vue.use(Router)
 
@@ -49,6 +51,16 @@ export default new Router({
       name: 'ThreadEdit',
       component: ThreadEdit,
       props: true // accept props from route
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
     {
       path: '/profile',
