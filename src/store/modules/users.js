@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import firebase from 'firebase'
-import {countObjectProperties, appendChildToParentMutation, currentTimestamp} from '@/helpers'
+import {countObjectProperties, appendChildToParentMutation, currentTimestamp, removeEmptyProperties} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -26,7 +26,23 @@ export default {
 
   actions: {
     updateUser ({commit}, user) {
-      commit('updateUser', {user, userId: user['.key']})
+      const updates = {
+        avatar: user.avatar,
+        username: user.username,
+        name: user.name,
+        bio: user.bio,
+        website: user.website,
+        email: user.email,
+        location: user.location
+      }
+
+      return new Promise((resolve, reject) => {
+        firebase.database().ref('users').child(user['.key']).update(removeEmptyProperties(updates))
+          .then(() => {
+            commit('updateUser', {user, userId: user['.key']})
+            resolve(user)
+          })
+      })
     },
 
     createUser ({state, commit}, {id, name, username, email, avatar = null}) {

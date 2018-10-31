@@ -18,8 +18,20 @@ const appendChildToParentMutation = ({child}) =>
     Vue.set(resource[child], childId, childId)
   }
 
+const removeEmptyProperties = object => {
+  const objectCopy = {...object}
+  Object.keys(objectCopy).forEach(key => {
+    if (!objectCopy[key]) {
+      delete objectCopy[key]
+    }
+  })
+
+  return objectCopy
+}
+
 export {
   countObjectProperties,
   currentTimestamp,
-  appendChildToParentMutation
+  appendChildToParentMutation,
+  removeEmptyProperties
 }
