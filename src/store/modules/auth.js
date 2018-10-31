@@ -3,17 +3,35 @@ export default {
   namespaced: true,
 
   state: {
-    authId: 'VXjpr2WHa8Ux4Bnggym8QFLdv5C3'
+    authId: null
   },
 
   getters: {
     authUser (state, getters, rootState) {
-      return rootState.users.items[state.authId]
+      return state.authId ? rootState.users.items[state.authId] : null
     }
 
   },
 
   actions: {
+
+    registerUserWithEmailAndPassword ({dispatch}, {email, password, name, username, avatar = null}) {
+      return firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(user => {
+          return dispatch('users/createUser', {id: user.user.uid, email, password, name, username, avatar}, {root: true})
+        })
+    },
+
+    signInUserWithEmailAndPassword (context, {email, password}) {
+      return firebase.auth().signInWithEmailAndPassword(email, password)
+    },
+
+    signOut ({commit}) {
+      return firebase.auth().signOut()
+        .then(() => {
+          commit('setAuthId', null)
+        })
+    },
 
     fetchAuthUser ({dispatch, commit}) {
       const userId = firebase.auth().currentUser.uid

@@ -40,8 +40,5 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App },
-  beforeCreate () { // because auth user is in navbar and in every page
-    store.dispatch('users/fetchUser', {id: store.state.auth.authId}, {root: true})
-  }
+  components: { App }
 })

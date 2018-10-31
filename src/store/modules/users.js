@@ -20,13 +20,6 @@ export default {
       commit('updateUser', {user, userId: user['.key']})
     },
 
-    registerUserWithEmailAndPassword ({dispatch}, {email, password, name, username, avatar = null}) {
-      return firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(user => {
-          return dispatch('users/createUser', {id: user.user.uid, email, password, name, username, avatar}, {root: true})
-        })
-    },
-
     createUser ({state, commit}, {id, name, username, email, avatar = null}) {
       return new Promise((resolve, reject) => {
         const registeredAt = currentTimestamp()

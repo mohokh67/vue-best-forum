@@ -57,7 +57,7 @@
     },
 
     methods: {
-      ...mapActions('users', ['registerUserWithEmailAndPassword']),
+      ...mapActions('auth', ['registerUserWithEmailAndPassword']),
 
       register () {
         this.registerUserWithEmailAndPassword(this.form)
