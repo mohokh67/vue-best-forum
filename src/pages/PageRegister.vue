@@ -35,7 +35,7 @@
 
       </form>
       <div class="text-center push-top">
-        <button  class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign up with Google</button>
+        <button @click.prevent="registerWithGoogle" class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign up with Google</button>
       </div>
     </div>
   </div>
@@ -57,10 +57,15 @@
     },
 
     methods: {
-      ...mapActions('auth', ['registerUserWithEmailAndPassword']),
+      ...mapActions('auth', ['registerUserWithEmailAndPassword', 'signInWithGoogle']),
 
       register () {
         this.registerUserWithEmailAndPassword(this.form)
+          .then(() => this.$router.push({name: 'Home'}))
+      },
+
+      registerWithGoogle () {
+        this.signInWithGoogle()
           .then(() => this.$router.push({name: 'Home'}))
       }
     },

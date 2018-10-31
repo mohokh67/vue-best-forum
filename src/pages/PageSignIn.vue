@@ -28,7 +28,7 @@
       </form>
 
       <div class="push-top text-center">
-        <button  class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign in with Google</button>
+        <button @click.prevent="registerWithGoogle" class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign in with Google</button>
       </div>
 
     </div>
@@ -50,13 +50,20 @@
     },
 
     methods: {
-      ...mapActions('auth', ['signInUserWithEmailAndPassword']),
+      ...mapActions('auth', ['signInUserWithEmailAndPassword', 'signInWithGoogle']),
 
       signIn () {
         this.signInUserWithEmailAndPassword({email: this.form.email, password: this.form.password})
           .then(() => this.$router.push({name: 'Home'}))
           .catch(error => { this.message = error.message })
+      },
+
+      registerWithGoogle () {
+        this.signInWithGoogle()
+          .then(() => this.$router.push({name: 'Home'}))
+          .catch(error => { this.message = error.message })
       }
+
     },
 
     created () {
