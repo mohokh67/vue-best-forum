@@ -54,14 +54,21 @@
 
       signIn () {
         this.signInUserWithEmailAndPassword({email: this.form.email, password: this.form.password})
-          .then(() => this.$router.push({name: 'Home'}))
+          .then(() => this.successRedirect())
           .catch(error => { this.message = error.message })
       },
 
       registerWithGoogle () {
         this.signInWithGoogle()
-          .then(() => this.$router.push({name: 'Home'}))
+          .then(() => this.successRedirect())
           .catch(error => { this.message = error.message })
+      },
+
+      successRedirect () {
+        // $router:global router
+        // $route: current route
+        const redirectTo = this.$route.query.redirectTo || {name: 'Home'}
+        this.$router.push(redirectTo)
       }
 
     },
