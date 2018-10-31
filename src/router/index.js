@@ -14,7 +14,7 @@ import Register from '@/pages/PageRegister'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -75,10 +75,8 @@ export default new Router({
       path: '/profile',
       name: 'Profile',
       component: Profile,
-      props: true,
-      beforeEnter (to, from, next) {
-        store.state.auth.authId ? next() : next({name: 'Home'})
-      }
+      meta: {requiredAuth: true},
+      props: true
     },
     {
       path: '/profile/edit',
@@ -94,3 +92,17 @@ export default new Router({
   ],
   mode: 'history' // https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(`Navigate from ${from.name} to ${to.name}`)
+  // to.meta.requiredAuth
+  // will only work with the specific route, not with any nested routes
+
+  if (to.matched.some(route => route.meta.requiredAuth)) {
+    store.state.auth.authId ? next() : next({name: 'Home'})
+  } else {
+    next()
+  }
+})
+
+export default router
