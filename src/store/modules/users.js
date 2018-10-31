@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import {countObjectProperties, appendChildToParentMutation} from '@/helpers'
+import firebase from 'firebase'
+import {countObjectProperties, appendChildToParentMutation, currentTimestamp} from '@/helpers'
 
 export default {
   namespaced: true,
@@ -17,6 +18,29 @@ export default {
   actions: {
     updateUser ({commit}, user) {
       commit('updateUser', {user, userId: user['.key']})
+    },
+
+    registerUserWithEmailAndPassword ({dispatch}, {email, password, name, username, avatar = null}) {
+      return firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(user => {
+          return dispatch('users/createUser', {id: user.user.uid, email, password, name, username, avatar}, {root: true})
+        })
+    },
+
+    createUser ({state, commit}, {id, name, username, email, avatar = null}) {
+      return new Promise((resolve, reject) => {
+        const registeredAt = currentTimestamp()
+        const usernameLower = username.toLowerCase()
+        email = email.toLowerCase()
+        const user = {avatar, name, username, registeredAt, email, usernameLower}
+
+        firebase.database().ref('users').child(id).set(user)
+          .then(() => {
+            commit('setItem', {resource: 'users', item: user, id}, {root: true})
+            console.log('User registered: ', id)
+            resolve(state.items[id])
+          })
+      })
     },
 
     fetchUser: ({dispatch}, {id}) => dispatch('fetchItem', {resource: 'users', id}, {root: true}),
