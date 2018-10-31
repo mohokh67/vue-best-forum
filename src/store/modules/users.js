@@ -12,7 +12,16 @@ export default {
   getters: {
     userPostsCount: (state) => (id) => countObjectProperties(state.items[id].posts),
     userThreadsCount: (state) => (id) => countObjectProperties(state.items[id].threads),
-    findUser: (state) => (id) => state.items[id]
+    findUser: (state) => (id) => state.items[id],
+    userPosts: (state, getters, rootState) => id => {
+      const user = rootState.users.items[id]
+      if (user.posts) {
+        return Object.values(rootState.posts.items)
+          .filter(post => post.userId === id)
+      }
+
+      return []
+    }
   },
 
   actions: {
