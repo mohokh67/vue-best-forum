@@ -104,7 +104,7 @@ router.beforeEach((to, from, next) => {
   // to.meta.requiredAuth
   // will only work with the specific route, not with any nested routes
 
-  store.dispatch('auth/initAuthentication', {}, {root: true})
+  store.dispatch('auth/initAuthentication')
     .then(user => {
       if (to.matched.some(route => route.meta.requiredAuth)) {
         user ? next() : next({name: 'SignIn', query: {redirectTo: to.path}})

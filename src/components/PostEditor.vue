@@ -19,12 +19,16 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex'
+
   export default {
+
     props: {
       threadId: {
         required: false,
         type: String
       },
+
       post: {
         type: Object,
         validator: obj => {
@@ -55,6 +59,11 @@
     },
 
     methods: {
+      ...mapActions('posts', {
+        'createPost': 'create',
+        'updatePost': 'update'
+      }),
+
       save () {
         (this.presist())
           .then(post => {
@@ -80,7 +89,7 @@
 
         this.postText = ''
         this.hasError = false
-        return this.$store.dispatch('posts/create', post)
+        return this.createPost(post)
       },
 
       update () {
@@ -91,7 +100,7 @@
 
         this.postText = ''
         this.hasError = false
-        return this.$store.dispatch('posts/update', payload)
+        return this.updatePost(payload)
       },
 
       cancel () {
