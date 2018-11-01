@@ -6,7 +6,9 @@ import router from './router'
 import store from '@/store'
 import AppDate from '@/components/AppDate'
 import firebase from 'firebase'
+import vuelidate from 'vuelidate'
 
+Vue.use(vuelidate)
 Vue.component('AppDate', AppDate)
 Vue.config.productionTip = false
 // Vue.config.silent = true
