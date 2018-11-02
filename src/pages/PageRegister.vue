@@ -6,27 +6,72 @@
 
         <div class="form-group">
           <label for="name">Full Name</label>
-          <input v-model="form.name" id="name" type="text" class="form-input">
+          <input
+            v-model.trim="form.name"
+            @blur="$v.form.name.$touch()"
+            id="name"
+            type="text"
+            class="form-input">
+          <template v-if="$v.form.name.$error">
+            <span v-if="!$v.form.name.required" class="form-error">It is required</span>
+          </template>
         </div>
 
         <div class="form-group">
           <label for="username">Username</label>
-          <input v-model="form.username" id="username" type="text" class="form-input">
+          <input
+            v-model.lazy.trim="form.username"
+            @blur="$v.form.username.$touch()"
+            id="username"
+            type="text"
+            class="form-input">
+          <template v-if="$v.form.username.$error">
+            <span v-if="!$v.form.username.required" class="form-error">It is required</span>
+            <span v-else-if="!$v.form.username.minLength" class="form-error">Minimum 4 characters</span>
+            <span v-else-if="!$v.form.username.unique" class="form-error">This username has been taken</span>
+          </template>
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input v-model="form.email" id="email" type="email" class="form-input">
+          <input
+            v-model.lazy.trim="form.email"
+            @blur="$v.form.email.$touch()"
+            id="email"
+            type="email"
+            class="form-input">
+          <template v-if="$v.form.email.$error">
+            <span v-if="!$v.form.email.required" class="form-error">It is required</span>
+            <span v-else-if="!$v.form.email.email" class="form-error">It should be a valid email</span>
+            <span v-else-if="!$v.form.email.unique" class="form-error">This email has been used</span>
+          </template>
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input v-model="form.password" id="password" type="password" class="form-input">
+          <input
+            v-model="form.password"
+            @blur="$v.form.password.$touch()"
+            id="password"
+            type="password"
+            class="form-input">
+          <template v-if="$v.form.password.$error">
+            <span v-if="!$v.form.password.required" class="form-error">It is required</span>
+            <span v-else-if="!$v.form.password.minLength" class="form-error">Minimum 6 characters</span>
+          </template>
         </div>
 
         <div class="form-group">
           <label for="avatar">Avatar</label>
-          <input v-model="form.avatar" id="avatar" type="text" class="form-input">
+          <input
+            v-model="form.avatar"
+            @blur="$v.form.avatar.$touch()"
+            id="avatar"
+            type="text"
+            class="form-input">
+          <template v-if="$v.form.avatar.$error">
+            <span v-if="!$v.form.avatar.url" class="form-error">It should be avalid URL</span>
+          </template>
         </div>
 
         <div class="form-actions">
@@ -41,7 +86,10 @@
   </div>
 </template>
 <script>
+  import { required, minLength, email, url, helpers as vuelidateHelpers } from 'vuelidate/lib/validators'
+  import firebase from 'firebase'
   import {mapActions} from 'vuex'
+
   export default {
 
     data () {
@@ -56,10 +104,58 @@
       }
     },
 
+    validations: {
+      form: {
+        name: {
+          required
+        },
+        username: {
+          required,
+          minLength: minLength(4),
+          unique (value) {
+            if (!vuelidateHelpers.req(value)) {
+              return true // the value would'nt be required. as we test this in above validator
+            }
+            return new Promise((resolve, reject) => {
+              firebase.database().ref('users').orderByChild('usernameLower').equalTo(value.toLowerCase())
+                .once('value', snapshot => resolve(!snapshot.exists()))
+            })
+          }
+        },
+        email: {
+          required,
+          email,
+          unique (value) {
+            if (!vuelidateHelpers.req(value)) {
+              return true // the value would'nt be required. as we test this in above validator
+            }
+            return new Promise((resolve, reject) => {
+              firebase.database().ref('users').orderByChild('email').equalTo(value.toLowerCase())
+                .once('value', snapshot => resolve(!snapshot.exists()))
+            })
+          }
+        },
+        password: {
+          required,
+          minLength: minLength(6)
+        },
+        avatar: {
+          url
+        }
+      }
+    },
+
     methods: {
       ...mapActions('auth', ['registerUserWithEmailAndPassword', 'signInWithGoogle']),
 
       register () {
+        this.$v.form.$touch()
+        if (this.$v.form.$invalid) {
+          console.log('Register form not submitted. Error in form validation')
+          return
+        }
+
+        console.log('Register form has validated.')
         this.registerUserWithEmailAndPassword(this.form)
           .then(() => this.successRedirect())
       },
