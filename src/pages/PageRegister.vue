@@ -64,13 +64,15 @@
         <div class="form-group">
           <label for="avatar">Avatar</label>
           <input
-            v-model="form.avatar"
+            v-model.lazy="form.avatar"
             @blur="$v.form.avatar.$touch()"
             id="avatar"
             type="text"
             class="form-input">
           <template v-if="$v.form.avatar.$error">
             <span v-if="!$v.form.avatar.url" class="form-error">It should be avalid URL</span>
+            <span v-else-if="!$v.form.avatar.supportedType" class="form-error">Supported files are 'jpg', 'png', 'gif' and 'svg'</span>
+            <span v-else-if="!$v.form.avatar.responseOk" class="form-error">This avatar doesn't exist</span>
           </template>
         </div>
 
@@ -114,7 +116,9 @@
           minLength: minLength(4),
           unique (value) {
             if (!vuelidateHelpers.req(value)) {
-              return true // the value would'nt be required. as we test this in above validator
+              // the value would'nt be required. as we test this in above validator
+              // it is not this validator job
+              return true
             }
             return new Promise((resolve, reject) => {
               firebase.database().ref('users').orderByChild('usernameLower').equalTo(value.toLowerCase())
@@ -127,7 +131,9 @@
           email,
           unique (value) {
             if (!vuelidateHelpers.req(value)) {
-              return true // the value would'nt be required. as we test this in above validator
+              // the value would'nt be required. as we test this in above validator
+              // it is not this validator job
+              return true
             }
             return new Promise((resolve, reject) => {
               firebase.database().ref('users').orderByChild('email').equalTo(value.toLowerCase())
@@ -140,7 +146,29 @@
           minLength: minLength(6)
         },
         avatar: {
-          url
+          url,
+          supportedType (value) {
+            if (!vuelidateHelpers.req(value)) {
+              // the value would'nt be required. as we test this in above validator
+              // it is not this validator job
+              return true
+            }
+            const supported = ['jpg', 'png', 'gif', 'svg']
+            const fileExtension = value.split('.').pop()
+            return supported.includes(fileExtension)
+          },
+          responseOk (value) {
+            if (!vuelidateHelpers.req(value)) {
+              // the value would'nt be required. as we test this in above validator
+              // it is not this validator job
+              return true
+            }
+            return new Promise((resolve, reject) => {
+              fetch(value)
+                .then(response => resolve(response.ok))
+                .catch(() => resolve(false))
+            })
+          }
         }
       }
     },
