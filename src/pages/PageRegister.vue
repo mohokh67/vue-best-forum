@@ -88,9 +88,9 @@
   </div>
 </template>
 <script>
-  import { required, minLength, email, url, helpers as vuelidateHelpers } from 'vuelidate/lib/validators'
-  import firebase from 'firebase'
+  import {required, minLength, email, url} from 'vuelidate/lib/validators'
   import {mapActions} from 'vuex'
+  import {uniqueEmail, uniqueUsername, avatarSupportedType, avatarResponseOk} from '@/helpers/validators'
 
   export default {
 
@@ -114,32 +114,12 @@
         username: {
           required,
           minLength: minLength(4),
-          unique (value) {
-            if (!vuelidateHelpers.req(value)) {
-              // the value would'nt be required. as we test this in above validator
-              // it is not this validator job
-              return true
-            }
-            return new Promise((resolve, reject) => {
-              firebase.database().ref('users').orderByChild('usernameLower').equalTo(value.toLowerCase())
-                .once('value', snapshot => resolve(!snapshot.exists()))
-            })
-          }
+          unique: uniqueUsername
         },
         email: {
           required,
           email,
-          unique (value) {
-            if (!vuelidateHelpers.req(value)) {
-              // the value would'nt be required. as we test this in above validator
-              // it is not this validator job
-              return true
-            }
-            return new Promise((resolve, reject) => {
-              firebase.database().ref('users').orderByChild('email').equalTo(value.toLowerCase())
-                .once('value', snapshot => resolve(!snapshot.exists()))
-            })
-          }
+          unique: uniqueEmail
         },
         password: {
           required,
@@ -147,28 +127,8 @@
         },
         avatar: {
           url,
-          supportedType (value) {
-            if (!vuelidateHelpers.req(value)) {
-              // the value would'nt be required. as we test this in above validator
-              // it is not this validator job
-              return true
-            }
-            const supported = ['jpg', 'png', 'gif', 'svg']
-            const fileExtension = value.split('.').pop()
-            return supported.includes(fileExtension)
-          },
-          responseOk (value) {
-            if (!vuelidateHelpers.req(value)) {
-              // the value would'nt be required. as we test this in above validator
-              // it is not this validator job
-              return true
-            }
-            return new Promise((resolve, reject) => {
-              fetch(value)
-                .then(response => resolve(response.ok))
-                .catch(() => resolve(false))
-            })
-          }
+          supportedType: avatarSupportedType,
+          responseOk: avatarResponseOk
         }
       }
     },
