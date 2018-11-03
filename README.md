@@ -13,6 +13,9 @@
 # install dependencies
 npm install
 
+# seed the database
+npm run db:seed
+
 # serve with hot reload at localhost:8080
 npm run dev
 
@@ -25,13 +28,15 @@ npm run build --report
 
 ## Firebase
 
+* Rename `.env.example` to `.env` and put the right credentials
 * Make sure the `src/config/firebase.js` has the right configs for firebase realtime database
 * Make sure the `read` and `write` are `true` in firebase rules configuration for `development` purposes and then choose the right config in `production`
+* Seed the DB with `npm run db:seed`
 
 ### firebase cli
 
 > This step is not required
-```
+``` bash
 # Install firebase cli globally with this command:
 npm install -g firebase-tools
 
@@ -46,6 +51,9 @@ firebase init
 
 # Seed the database with this command:
 firebase database:set / src/data.json
+
+# dDeploy changes to database
+firebase deploy
 ```
 
 
