@@ -21,7 +21,7 @@ const appendChildToParentMutation = ({child}) =>
 const removeEmptyProperties = object => {
   const objectCopy = {...object}
   Object.keys(objectCopy).forEach(key => {
-    if ([null, undefined].includes(objCopy[key])) {
+    if ([null, undefined].includes(objectCopy[key])) {
       delete objectCopy[key]
     }
   })

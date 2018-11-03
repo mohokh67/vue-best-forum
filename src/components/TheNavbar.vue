@@ -18,7 +18,7 @@
     <!-- use .navbar-open to open nav -->
     <nav class="navbar">
       <ul v-if="user">
-        <li class="navbar-user">
+        <li class="navbar-user" v-clickedOutside="closeDropdown">
           <a @click.prevent="userDropdownOpen = !userDropdownOpen">
             <img class="avatar-small" :src="user.avatar" alt="">
             <span>
@@ -29,7 +29,9 @@
 
           <!-- dropdown menu -->
           <!-- add class "active-drop" to show the dropdown -->
-          <div id="user-dropdown" :class="{'active-drop': userDropdownOpen}">
+          <div
+            id="user-dropdown"
+            :class="{'active-drop': userDropdownOpen}">
             <div class="triangle-drop"></div>
             <ul class="dropdown-menu">
               <li class="dropdown-menu-item">
@@ -58,12 +60,18 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
+  import clickedOutside from '@/directives/clickedOutside'
+
   export default {
 
     data () {
       return {
         userDropdownOpen: false
       }
+    },
+
+    directives: {
+      clickedOutside
     },
 
     computed: {
@@ -73,7 +81,11 @@
     },
 
     methods: {
-      ...mapActions('auth', ['signOut'])
+      ...mapActions('auth', ['signOut']),
+
+      closeDropdown () {
+        this.userDropdownOpen = false
+      }
     }
 
   }
