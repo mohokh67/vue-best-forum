@@ -39,7 +39,7 @@
     </form>
 </template>
 <script>
-  import {required, minLength, email, url} from 'vuelidate/lib/validators'
+  import {required, minLength} from 'vuelidate/lib/validators'
 
   export default {
     props: {
