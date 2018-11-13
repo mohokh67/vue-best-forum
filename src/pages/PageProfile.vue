@@ -58,7 +58,8 @@
     },
 
     created () {
-      this.$store.dispatch('posts/fetchPosts', {ids: this.user.posts}, {root: true})
+      const userPostsIds = this.user.posts ? this.user.posts : []
+      this.$store.dispatch('posts/fetchPosts', {ids: userPostsIds}, {root: true})
         .then(() => this.asyncDataStatus_fetched())
     }
 
