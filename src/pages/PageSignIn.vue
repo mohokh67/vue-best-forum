@@ -7,11 +7,26 @@
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input v-model="form.email" id="email" type="text" class="form-input">
+          <input
+            v-model="form.email"
+            @blur="$v.form.email.$touch()"
+            id="email"
+            type="email"
+            class="form-input">
+          <template v-if="$v.form.email.$error">
+            <span v-if="!$v.form.email.required" class="form-error">It is required</span>
+            <span v-else-if="!$v.form.email.email" class="form-error">It should be a valid email</span>
+          </template>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input v-model="form.password" id="password" type="password" class="form-input">
+          <input
+            v-model="form.password"
+            @blur="$v.form.password.$touch()"
+            id="password"
+            type="password"
+            class="form-input">
+          <span v-if="$v.form.password.$error && !$v.form.password.required" class="form-error">It is required</span>
         </div>
 
         <div v-if="message" class="form-group">
@@ -36,6 +51,7 @@
 </template>
 <script>
   import {mapActions} from 'vuex'
+  import {required, email} from 'vuelidate/lib/validators'
 
   export default {
 
@@ -49,10 +65,29 @@
       }
     },
 
+    validations: {
+      form: {
+        email: {
+          required,
+          email
+        },
+        password: {
+          required
+        }
+      }
+    },
+
     methods: {
       ...mapActions('auth', ['signInUserWithEmailAndPassword', 'signInWithGoogle']),
 
       signIn () {
+        this.$v.form.$touch()
+        if (this.$v.form.$invalid) {
+          console.log('Login form not submitted. Error in form validation')
+          return
+        }
+        console.log('login form has validated.')
+
         this.signInUserWithEmailAndPassword({email: this.form.email, password: this.form.password})
           .then(() => this.successRedirect())
           .catch(error => { this.message = error.message })

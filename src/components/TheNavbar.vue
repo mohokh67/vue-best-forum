@@ -42,7 +42,6 @@
                 <router-link :to="{name: 'Profile'}">View Profile</router-link>
               </li>
               <li class="dropdown-menu-item">
-                <!-- <router-link :to="{name: 'SignOut'}">Sign out</router-link> -->
                 <a @click.prevent="signOut">Sign out</a>
               </li>
             </ul>
