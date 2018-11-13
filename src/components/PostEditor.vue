@@ -92,7 +92,7 @@
         this.$v.form.$touch()
         if (this.$v.form.$invalid) {
           console.log('Post editor not submitted. Error in form validation')
-          return
+          return Promise.reject(new Error('Post editor failed to create')).then('1')
         }
 
         const post = {
@@ -101,6 +101,7 @@
         }
 
         this.form.postText = ''
+        this.$v.form.$reset()
         return this.createPost(post)
       },
 
@@ -108,7 +109,8 @@
         this.$v.form.$touch()
         if (this.$v.form.$invalid) {
           console.log('Post editor not submitted. Error in form validation')
-          return
+          // return Promise.reject(new Error('Post editor failed to update')).then('1')
+          return Promise.reject(new Error('Post editor failed to update'))
         }
 
         const payload = {
@@ -117,7 +119,7 @@
         }
 
         this.form.postText = ''
-        this.hasError = false
+        this.$v.form.$reset()
         return this.updatePost(payload)
       },
 
