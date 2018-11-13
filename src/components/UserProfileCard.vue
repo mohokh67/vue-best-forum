@@ -22,13 +22,13 @@
       <hr>
 
       <p v-if="user.website" class="text-large text-center">
-        <i class="fas fa-globe">
-          <a :href="user.website">{{user.website}}</a>
+        <i class="fa fa-globe">&nbsp;
+          <a :href="user.website" target="_blank">{{user.website}}</a>
         </i>
       </p>
     </div>
 
-      <p class="text-xsmall text-faded text-center">sssss</p>
+      <p class="text-xsmall text-faded text-center">More Info</p>
       <div class="text-center">
         <hr>
         <router-link :to="{name: 'ProfileEdit'}" class="btn-green btn-small">Edit Profile</router-link>
