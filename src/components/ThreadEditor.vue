@@ -28,7 +28,7 @@
         </textarea>
         <template v-if="$v.form.text.$error">
             <span v-if="!$v.form.text.required" class="form-error">It is required</span>
-            <span v-else-if="!$v.form.text.minLength" class="form-error">Minimum 40 characters</span>
+            <span v-else-if="!$v.form.text.minLength" class="form-error">Minimum 40 characters. Type at least {{40 - form.text.length}} more</span>
           </template>
       </div>
 

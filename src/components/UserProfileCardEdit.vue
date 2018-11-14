@@ -6,11 +6,29 @@
       </p>
 
       <div class="form-group">
-        <input v-model="currentUser.username" type="text" placeholder="Username" class="form-input text-lead text-bold">
+        <input
+          v-model="currentUser.username"
+          @blur="$v.currentUser.username.$touch()"
+          type="text"
+          placeholder="Username"
+          class="form-input text-lead text-bold">
+        <template v-if="$v.currentUser.username.$error">
+          <span v-if="!$v.currentUser.username.required" class="form-error">It is required</span>
+          <span v-else-if="!$v.currentUser.username.minLength" class="form-error">Minimum 4 characters</span>
+          <span v-else-if="!$v.currentUser.username.unique" class="form-error">This username has been taken</span>
+        </template>
       </div>
 
       <div class="form-group">
-        <input v-model="currentUser.name" type="text" placeholder="Full Name" class="form-input text-bold">
+        <input
+          v-model="currentUser.name"
+          @blur="$v.currentUser.name.$touch()"
+          type="text"
+          placeholder="Full Name"
+          class="form-input text-bold">
+        <template v-if="$v.currentUser.name.$error">
+          <span v-if="!$v.form.currentUser.name.required" class="form-error">It is required</span>
+        </template>
       </div>
 
       <div class="form-group">
@@ -27,12 +45,30 @@
 
       <div class="form-group">
         <label class="form-label" for="userWebsite">Website</label>
-        <input v-model="currentUser.website" class="form-input" id="userWebsite" autocomplete="off">
+        <input
+          v-model="currentUser.website"
+          @blur="$v.currentUser.website.$touch()"
+          class="form-input"
+          id="userWebsite"
+           autocomplete="off">
+        <template v-if="$v.currentUser.website.$error">
+          <span v-if="!$v.currentUser.website.url" class="form-error">It should be avalid URL</span>
+        </template>
       </div>
 
       <div class="form-group">
         <label class="form-label" for="userEmail">Email</label>
-        <input v-model="currentUser.email" class="form-input" id="userEmail" autocomplete="off">
+        <input
+          v-model="currentUser.email"
+          @blur="$v.currentUser.email.$touch()"
+          class="form-input"
+          id="userEmail"
+          autocomplete="off">
+        <template v-if="$v.currentUser.email.$error">
+          <span v-if="!$v.form.currentUser.email.required" class="form-error">It is required</span>
+          <span v-else-if="!$v.currentUser.email.email" class="form-error">It should be a valid email</span>
+          <span v-else-if="!$v.currentUser.email.unique" class="form-error">This email has been used</span>
+        </template>
       </div>
 
       <div class="form-group">
@@ -41,7 +77,7 @@
       </div>
 
       <div class="form-group space-between">
-        <button  @click.prevent="cancel" class="btn-ghost">Cancel</button>
+        <button @click.prevent="cancel" class="btn-ghost">Cancel</button>
         <button @click.prevent="save" type="submit" class="btn-blue">Save</button>
       </div>
 
@@ -53,6 +89,8 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
+  import { required, minLength, email, url } from 'vuelidate/lib/validators'
+  import { uniqueEmail, uniqueUsername } from '@/helpers/validators'
 
   export default {
     props: {
@@ -68,10 +106,44 @@
       }
     },
 
+    validations: {
+      currentUser: {
+        name: {
+          required
+        },
+        username: {
+          required,
+          minLength: minLength(4),
+          unique (value) {
+            if (value.toLowerCase() === this.currentUser.usernameLower) {
+              return true
+            }
+            return uniqueUsername(value)
+          }
+        },
+        email: {
+          required,
+          email,
+          unique (value) {
+            if (value.toLowerCase() === this.currentUser.email) {
+              return true
+            }
+            return uniqueEmail(value)
+          }
+        },
+        website: {
+          url
+        }
+      }
+    },
+
     methods: {
       save () {
-        this.$store.dispatch('users/updateUser', {...this.currentUser})
-        this.$router.push({name: 'Profile'})
+        this.$v.currentUser.$touch()
+        if (!this.$v.currentUser.$invalid) {
+          this.$store.dispatch('users/updateUser', {...this.currentUser})
+          this.$router.push({name: 'Profile'})
+        }
       },
 
       cancel () {
