@@ -2,14 +2,16 @@
   <form @submit.prevent="save">
     <div class="form-group">
         <textarea
-          name=""
-          id=""
           cols="300"
           rows="3"
           class="form-input"
-          v-model="postText"
+          v-model="form.postText"
+          @blur="$v.form.postText.$touch()"
         ></textarea>
-        <p v-if="hasError" class="text-error">The post can not be empty</p>
+        <template v-if="$v.form.postText.$error">
+          <span v-if="!$v.form.postText.required" class="form-error">It is required</span>
+          <span v-else-if="!$v.form.postText.minLength" class="form-error">Minimum 13 characters</span>
+        </template>
     </div>
     <div class="form-action btn-group">
       <button v-if="isUpdate" @click.prevent="cancel" class="btn btn-ghost">Cancel</button>
@@ -20,6 +22,7 @@
 
 <script>
   import {mapActions} from 'vuex'
+  import {required, minLength} from 'vuelidate/lib/validators'
 
   export default {
 
@@ -45,10 +48,20 @@
       }
     },
 
+    validations: {
+      form: {
+        postText: {
+          required,
+          minLength: minLength(13)
+        }
+      }
+    },
+
     data () {
       return {
-        postText: this.post ? this.post.text : '',
-        hasError: false
+        form: {
+          postText: this.post ? this.post.text : ''
+        }
       }
     },
 
@@ -68,6 +81,8 @@
         (this.presist())
           .then(post => {
             this.$emit('save', {post})
+          }).catch(error => {
+            console.log('Error in Validation: ' + error)
           })
       },
 
@@ -76,30 +91,36 @@
       },
 
       create () {
-        this.hasError = false
-        if (this.postText === '') {
-          this.hasError = true
-          return
+        this.$v.form.$touch()
+        if (this.$v.form.$invalid) {
+          console.log('Post editor not submitted. Error in form validation')
+          return Promise.reject(new Error('Post editor failed to create'))
         }
 
         const post = {
           threadId: this.threadId,
-          text: this.postText
+          text: this.form.postText
         }
 
-        this.postText = ''
-        this.hasError = false
+        this.form.postText = ''
+        this.$v.form.$reset()
         return this.createPost(post)
       },
 
       update () {
-        const payload = {
-          id: this.post['.key'],
-          text: this.postText
+        this.$v.form.$touch()
+        if (this.$v.form.$invalid) {
+          console.log('Post editor not submitted. Error in form validation')
+          return Promise.reject(new Error('Post editor failed to update'))
         }
 
-        this.postText = ''
-        this.hasError = false
+        const payload = {
+          id: this.post['.key'],
+          text: this.form.postText
+        }
+
+        this.form.postText = ''
+        this.$v.form.$reset()
         return this.updatePost(payload)
       },
 
@@ -110,10 +131,3 @@
     }
   }
 </script>
-
-<style scoped>
-.text-error {
-  color: red;
-  font-size: small;
-}
-</style>
